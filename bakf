@@ -1,0 +1,9 @@
+#!/bin/bash
+
+id="$1"
+abs_dir=`getAbsDir "$id"`
+arg=`getArg "$id" "$2"`
+mv "$abs_dir/$arg" "$abs_dir/$arg.bak"
+
+
+

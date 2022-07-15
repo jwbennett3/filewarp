@@ -1,0 +1,236 @@
+#!/bin/bash -e
+
+id="$1"
+dir="$2"
+header_str="$3"
+search_by="$4"
+query_str="$5"
+mode="$6"
+
+
+#mode="normal"
+#mode="insert"
+
+#F12 - nop
+up="f12"
+down="f12"
+page_up="f12"
+page_down="f12"
+preview_up="f12"
+preview_down="f12"
+preview_page_up="f12"
+preview_page_down="f12"
+toggle="f12"
+toggle_up="f12"
+toggle_down="f12"
+jump="f12"
+watchdir="f12"
+goup="f12"
+godown="f12"
+delete="f12"
+fdelete="f12"
+rename="f12"
+cprename="f12"
+newdir="f12"
+newdircd="f12"
+newfile="f12"
+newfiletype="f12"
+perms="f12"
+quicksearch="f12"
+getpath="f12"
+bak="f12"
+unbakf="f12"
+bakf="f12"
+duh="f12"
+count="f12"
+
+
+if [[ "$mode" == "normal" ]];then
+  #modch="--bind=space:execute(echo modch)+print-query"
+  modch="--bind=ctrl-space:execute(echo modch)+print-query"
+  leader="d"
+  up="e"
+  down="n"
+  page_up="E"
+  page_down="N"
+  preview_up="s"
+  preview_down="r"
+  preview_page_up="S"
+  preview_page_down="R"
+  toggle="I"
+  toggle_up="alt-e"
+  toggle_down="alt-n"
+  jump="o"
+  goup="h"
+  godown="i"
+  watchdir="w"
+  #delete="d"
+  delete="f12"
+  #fdelete="D"
+  fdelete="f12"
+  rename="p"
+  cprename="P"
+  newdir="alt-k"
+  newdircd="ctrl-alt-k"
+  newfile="k"
+  newfiletype="K"
+  perms="m"
+  #quicksearch="'"
+  quicksearch="space"
+  getpath=":"
+  bak="alt-b"
+  bakf="b"
+  unbakf="B"
+  duh="t"
+  count="T"
+
+  hkey="ctrl-h"
+  nkey="ctrl-n"
+  ekey="ctrl-e"
+  ikey="ctrl-i"
+
+opts=$(cat <<-END
+--prompt=(normal)
+--multi
+--border=rounded
+--pointer=~
+--marker=*
+--bind=q:disable-search
+--bind=w:disable-search
+--bind=f:disable-search
+--bind=g:disable-search
+--bind=p:disable-search
+--bind=j:disable-search
+--color=bg:#17171A,bg+:#3F3F3F,info:#BDBB72,border:#6B6B6B,spinner:#98BC99
+--color=hl:#719872,fg:#D9D9D9,header:#719872,fg+:#D9D9D9
+--color=pointer:#E12672,marker:#E17899,prompt:#98BEDE,hl+:#98BC99
+END
+)
+else
+  modch="--bind=ctrl-space:execute(echo modch)+print-query"
+  leader="insert"
+
+  hkey="f12"
+  nkey="f12"
+  ekey="f12"
+  ikey="f12"
+  goup="ctrl-h"
+  down="ctrl-n"
+  up="ctrl-e"
+  godown="ctrl-i"
+
+#--no-color
+opts=$(cat <<-END
+--prompt=>
+--pointer=>
+END
+)
+fi
+
+
+
+
+#path=`cat /tmp/nav/path``cat /tmp/nav/cursor_at`
+#preview_str="cat /tmp/nav/preview"
+#preview_str="if [[ -d $path/{} && {} != \"\" ]]; then ls -A -1 --dereference-command-line-symlink-to-dir --group-directories-first --color=always $path/{} ; else head -n 100 $path/{}; fi"
+#--bind="f5:execute(echo refresh)+print-query"  \
+#--bind="alt-space:execute(echo delete)+accept" \
+#--preview="cat /tmp/nav/preview" \
+#bindings that involve a ctrl- cannot be templated in
+
+#--bind="alt-l:execute(echo togglesort)+print-query" \
+
+#--preview-window="follow:cycle:+{20}-/1" \
+#fzf --header="$(getHeaderStr $id)" \
+#--query="$query_str" \
+
+head_str=$(cat <<-EOM
+$id
+
+----------------------------------------
+EOM
+)
+
+#--bind="alt-space:execute-silent(delete $id {})+reload(getList $id)" \
+fzf --header="$head_str" \
+--preview="getPreview {} $id" \
+--preview-window="right:50%" \
+--query="$(getQueryStr $id)" \
+$opts \
+"$modch" \
+--bind="ctrl-q:execute(echo appendtoquery q)+print-query" \
+--bind="ctrl-w:execute(echo appendtoquery w)+print-query" \
+--bind="ctrl-f:execute(echo appendtoquery f)+print-query" \
+--bind="ctrl-p:execute(echo appendtoquery p)+print-query" \
+--bind="ctrl-g:execute(echo appendtoquery g)+print-query" \
+--bind="ctrl-j:execute(echo appendtoquery j)+print-query" \
+--bind="ctrl-l:execute(echo appendtoquery l)+print-query" \
+--bind="ctrl-u:execute(echo appendtoquery u)+print-query" \
+--bind="ctrl-y:execute(echo appendtoquery y)+print-query" \
+--bind="ctrl-a:execute(echo appendtoquery a)+print-query" \
+--bind="ctrl-r:execute(echo appendtoquery r)+print-query" \
+--bind="ctrl-s:execute(echo appendtoquery s)+print-query" \
+--bind="ctrl-t:execute(echo appendtoquery t)+print-query" \
+--bind="ctrl-d:execute(echo appendtoquery d)+print-query" \
+--bind="$hkey:execute(echo appendtoquery h)+print-query" \
+--bind="$nkey:execute(echo appendtoquery n)+print-query" \
+--bind="$ekey:execute(echo appendtoquery e)+print-query" \
+--bind="$ikey:execute(echo appendtoquery i)+print-query" \
+--bind="ctrl-o:execute(echo appendtoquery o)+print-query" \
+--bind="ctrl-z:execute(echo appendtoquery z)+print-query" \
+--bind="ctrl-x:execute(echo appendtoquery x)+print-query" \
+--bind="ctrl-c:execute(echo appendtoquery c)+print-query" \
+--bind="ctrl-v:execute(echo appendtoquery v)+print-query" \
+--bind="ctrl-b:execute(echo appendtoquery b)+print-query" \
+--bind="ctrl-k:execute(echo appendtoquery k)+print-query" \
+--bind="ctrl-m:execute(echo appendtoquery m)+print-query" \
+--bind="alt-c:abort" \
+--bind="f5:reload(getList $id)+refresh-preview" \
+--bind="enter:execute(echo exitnav)+accept" \
+--bind="alt-enter:execute(echo altexitnav)+accept" \
+--bind="alt-l:execute-silent(toggleview $id)+reload(getList $id)" \
+--bind="ctrl-alt-l:execute-silent(togglesortby $id)+reload(getList $id)" \
+--bind="alt-u:toggle-preview" \
+--bind="alt-o:execute(echo jumpdown)+jump-accept" \
+--bind="g:execute-silent(delete $id {})+reload(getList $id)" \
+--bind="$quicksearch:execute(echo quicksearch)+accept" \
+--bind="$up:up" \
+--bind="$down:down" \
+--bind="$page_up:half-page-up+reload(getList $id)" \
+--bind="$page_down:half-page-down+reload(getList $id)" \
+--bind="$preview_up:preview-up" \
+--bind="$preview_down:preview-down" \
+--bind="$preview_page_up:preview-half-page-up" \
+--bind="$preview_page_down:preview-half-page-down" \
+--bind="$toggle:toggle" \
+--bind="$toggle_up:toggle+up" \
+--bind="$toggle_down:toggle+down" \
+--bind="$jump:jump" \
+--bind="$watchdir:execute(echo watchdir)+accept" \
+--bind="$goup:execute-silent(goup $id)+reload(getList $id)+clear-query" \
+--bind="$godown:execute-silent(fzfgodown $id {})+reload(getList $id)+clear-query" \
+--bind="$getpath:execute-silent(getPath $id {})+reload(getList $id)" \
+--bind="$bak:execute-silent(bak $id {})+reload(getList $id)" \
+--bind="$bakf:execute-silent(bakf $id {})+reload(getList $id)" \
+--bind="$unbakf:execute-silent(unbakf $id {})+reload(getList $id)" \
+--bind="$leader:execute(echo leaderkey)+accept" \
+--bind="$delete:execute(echo delete)+accept" \
+--bind="$fdelete:execute(echo fdelete)+accept" \
+--bind="$rename:execute(echo rename)+accept" \
+--bind="$cprename:execute(echo cprename)+accept" \
+--bind="$newdir:execute(echo newdir)+accept" \
+--bind="$newdircd:execute(echo newdircd)+accept" \
+--bind="$newfile:execute(echo newfile)+accept" \
+--bind="$newfiletype:execute(echo newfiletype)+accept" \
+--bind="$perms:execute(echo perms)+accept" \
+--bind="$duh:execute(echo duh)+accept" \
+--bind="$count:execute(echo count)+accept" \
+
+#--bind="ctrl-i:execute-silent(fzfgodown $id {})+reload(getList $id)+clear-query" \
+
+#--bind="$godown:execute-silent(if [[ -d `getAbsDir`/{} ]];then godown $id {};fi)+reload(getList $id)+clear-query" \
+
+#--bind="$goup:execute(goup $id)" \
+
+
+

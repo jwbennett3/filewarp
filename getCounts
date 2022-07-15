@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+
+input=`getName $MYPID`
+input=$(removeTrailingSlashes $input)
+
+abs_dir="`getAbsDir $MYPID`"
+dest="$abs_dir/$input"
+stats=($(stat $dest))
+echo -e "path: $dest\n\nmd5sum: $(md5sum $dest  | awk '{print $1}')\naccess:${stats[17]}\nnum files: $(sudo find "$dest" -type f | wc -l) \nnum dirs: $(sudo find "$dest" -type d | wc -l)\nsize: $(sudo du -sh $dest | awk '{print $1;}')"
+
+

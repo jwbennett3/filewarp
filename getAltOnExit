@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+id="$1"
+if [[ -e /tmp/nav/$id/alt_on_exit ]];then
+  cat /tmp/nav/$id/alt_on_exit 
+else
+  echo ""
+fi

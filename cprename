@@ -1,0 +1,34 @@
+#!/bin/bash -e
+
+input=$(getName "$MYPID")
+input_arr=("$input")
+orig_name=${input_arr[0]}
+orig_name=$(removeTrailingSlashes $orig_name)
+echo "copying: ${orig_name}"
+read -e -i $orig_name -p 'to: ' new_name
+
+abs_dir="$(getAbsDir $MYPID)"
+
+if [[ "$new_name" == "/"* ]]; then
+  dest="$new_name"
+else
+  dest="$abs_dir/$new_name"
+fi
+
+status="go"
+if [[ -e "$dest" ]]; then
+  echo $dest already exists, f to force, any other key to abort
+  read -p '' status
+  if [[ "$status" == "f" ]]; then
+    status="go"
+  else
+    status="nogo"
+  fi
+fi
+
+if [[ "$status" == "go" ]]; then
+  src="$abs_dir/$orig_name"
+  #copy "$src" "$dest"
+  cp -r "$src" "$dest"
+  echo "$dest" >/tmp/output
+fi

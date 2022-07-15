@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+id="$1"
+
+if [[ -e /tmp/nav/$id/abs_dir ]];then
+  cat /tmp/nav/$id/abs_dir
+else
+  echo ""
+fi

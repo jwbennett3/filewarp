@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+if [[ "$1" == ".." ]] || [[ "$1" == "-" ]]; then
+  x=1
+elif [[ "$1" = /* ]]; then
+    addRecentDirectory "$1" "$$"
+    #setAbsDir "$$" "$1"
+else
+    addRecentDirectory `pwd`/"$1" "$$"
+    #setAbsDir "$$" "`pwd`/$1"
+fi
+command cd "$1"
+#setAbsDir "$$" "`pwd`"
+if [[ $(ls -lisa | grep .git) != "" ]]; then
+  if [[ $(pwd | grep checkouts) != "" ]]; then
+    git pull
+  fi
+fi

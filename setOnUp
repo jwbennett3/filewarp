@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+id="$1"
+mkdir -p /tmp/nav/$id
+echo "$2" > /tmp/nav/$id/on_up 
+
+

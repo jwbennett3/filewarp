@@ -1,0 +1,48 @@
+#!/bin/bash -e
+
+set -o vi
+
+if [[ -z "$id" ]]; then
+  export MYPID=$(echo $$)
+else
+  export MYPID=$id
+fi
+path="$1"
+mode="$2"
+
+NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" nvim -u $VIMHOME/nvim/nav-enter.vim -c "colorscheme delek | call ProjTreeFromTerminal('$path','$mode')"
+
+directory=$(getAbsDir $MYPID)
+name=$(getName $MYPID)
+path="$directory/$name"
+if [[ -f "$path" ]];then
+  open $path
+  #editText "$path"
+fi
+
+
+if [[ -e /tmp/nav/$MYPID/killf ]]; then
+  rm -f /tmp/nav/$MYPID/killc
+elif [[ -e /tmp/nav/$MYPID/kill ]]; then
+  rm -f /tmp/nav/$MYPID/kill
+  if [[ ! -z "$directory" ]]; then
+    owner=$(stat -c '%U' "$directory")
+    group=$(stat -c '%G' "$directory")
+    sudo chown $USER:me "$directory"
+    command cd "$directory"
+    sudo chown $owner:$group $directory
+  fi
+  if [[ -e /tmp/nav/$MYPID/list_on_exit ]]; then
+    rm -f /tmp/nav/$MYPID/list_on_exit
+    list2 .
+  fi
+else
+  if [[ "$MYPID" != 0 ]];then
+    id=$MYPID navdown2 "$1" "$2"
+  fi
+fi
+
+#if [[ ! -e /tmp/tmp/no_custom_complete ]];then
+  #customComplete
+#fi
+

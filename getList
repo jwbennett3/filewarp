@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+
+view=`getView "$1"`
+sort_by=`getSortBy "$1"`
+abs_dir=`getAbsDir "$1"`
+
+if [[ "$view" == "normalView" ]]; then
+  list2 "$abs_dir" | awk '{print $10, $11, $12}'
+else
+  if [[ "$view" == "duView" ]]; then
+ ####sudo sh -c 'cd "$abs_dir"'
+ ####sudo changeDirectory "$abs_dir"
+    echo ""
+    cd "$abs_dir"
+    if [[ "$sort_by" == "size" ]];then
+      sudo du -sh --no-dereference --one-file-system --exclude=/data --exclude=dms* --exclude=/share --exclude=/old_share --exclude=/proc --exclude=/swapfile * | sort -rh
+    else
+      sudo du -sh --no-dereference --one-file-system --exclude=/data --exclude=dms* --exclude=/share --exclude=/old_share --exclude=/proc --exclude=/swapfile *
+    fi
+elif [[ "$sort_by" == "alpha" ]]; then
+  list2 "$abs_dir" | awk '{print $3, $1, "    " $10, $11, $12}'
+else
+  list2 "$abs_dir" "time" | awk '{print $5, $6, $7, "  " $10, $11, $12}'
+fi
+fi
+

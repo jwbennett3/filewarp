@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+id="$1"
+mod="$2"
+#MOD=$(cat <<-END
+#+x
+#\n-x
+#\n775
+#END
+#)
+#TODO use fzfnav
+#mod=$(echo -e $MOD | fzf)
+
+abs_dir=`getAbsDir "$id"`
+name=`getName "$id"`
+
+sudo chmod $mod $abs_dir/$name
+

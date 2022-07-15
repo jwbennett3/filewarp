@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+curr_dir="$1"
+hide_preview="$2"
+
+
+. navdown "$curr_dir" ". changeDirectory" ". navupr" "exit;" "exit;" "" "" "$MYPID" "$hide_preview"
+
+

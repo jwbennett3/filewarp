@@ -1,0 +1,29 @@
+#!/bin/bash
+
+from="$1"
+
+if [[ "$from" == "left" ]];then
+  from_path=`getAbsDir $LEFT_PID`/`getName $LEFT_PID`
+  to_path=`getAbsDir $RIGHT_PID`/`getName $LEFT_PID`
+else
+  from_path=`getAbsDir $RIGHT_PID`/`getName $RIGHT_PID`
+  to_path=`getAbsDir $LEFT_PID`/`getName $RIGHT_PID`
+fi
+from_path=`cleanFilePath $from_path`
+#echo $from_path >> /tmp/deb
+#echo $to_path > /tmp/deb2
+#echo $from >> /tmp/deb2
+#echo $LEFT_PID >> /tmp/deb2
+#echo $RIGHT_PID >> /tmp/deb2
+
+if [[ "$from_path" != "/" ]];then
+  #mod=$(stat -c "%a" $from_path)
+  #sudo cp -rp "$from_path" "$to_path"
+   echo "$from_path" 🡺 "$to_path"
+   . copy "$from_path" "$to_path"
+   #bash -c "copy /tmp/dms-master-1.24.1.el7.x86_64.rpm /tmp/123"
+   #rm -f /tmp/12322; . copy /tmp/rhel7-dms-develop.tar.xz /tmp/12322
+fi
+
+
+

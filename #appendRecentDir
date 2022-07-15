@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+RECENT_DIRS=~/.cache/ide-$context/recent_dirs
+echo "$1" >> $RECENT_DIRS
+

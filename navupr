@@ -1,0 +1,8 @@
+#!/bin/bash
+
+command cd ..
+#setAbsDir "$$" "`pwd`"
+#echo "`pwd`" > /tmp/kill$MYPID
+
+addRecentDirectory `pwd` -1 > /dev/null 2>&1
+

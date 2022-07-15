@@ -1,0 +1,90 @@
+#!/bin/bash
+
+SCRIPT_DIR="/config/scripts/explorer"
+
+dir="$1"
+on_enter="$2"
+on_up="$3"
+on_open="$4"
+alt_open="$5"
+on_exit="$6"
+alt_exit="$7"
+id="$8"
+hide_preview="$9"
+
+if [[ -z "$on_enter" ]];then
+  on_enter="echo;"
+fi
+if [[ -z "$on_up" ]];then
+  on_up="navupr"
+fi
+if [[ -z "$on_open" ]];then
+  on_open="addRecentFile"
+fi
+if [[ -z "$alt_open" ]];then
+  alt_open="$on_open"
+fi
+if [[ -z "$on_exit" ]];then
+  on_exit="command cd"
+  #on_exit='echo "`pwd`" > /tmp/kill$id'
+fi
+if [[ -z "$alt_exit" ]];then
+  alt_exit="echo;"
+fi
+
+if [[ -z "$view" ]]; then
+  view="normalView"
+fi
+if [[ -z "$sort_by" ]]; then
+  sort_by="alpha"
+fi
+
+if [[ -z "$mode" ]]; then
+  mode="normal"
+fi
+if [[ -z "$id" ]];then
+  id="$$"
+fi
+#echo $id
+
+on_enter_state=`getOnEnter "$id"`
+if [[ -z "$on_enter_state" ]];then
+  setOnEnter "$id" "$on_enter"
+fi
+
+on_exit_state=`getOnExit "$id"`
+if [[ -z "$on_exit_state" ]];then
+  setOnExit "$id" "$on_exit"
+fi
+
+alt_on_exit_state=`getAltOnExit "$id"`
+if [[ -z "$alt_on_exit_state" ]];then
+  setAltOnExit "$id" "$alt_on_exit"
+fi
+
+on_up_state=`getOnUp "$id"`
+if [[ -z "$on_up_state" ]];then
+  setOnUp "$id" "$on_up"
+fi
+
+on_open_state=`getOnOpen "$id"`
+if [[ -z "$on_open_state" ]];then
+  setOnOpen "$id" "$on_open"
+fi
+
+abs_dir=`getAbsDir "$id"`
+if [[ ! -z "$dir" ]];then
+  export abs_dir=$(realpath -s $dir)
+  setAbsDir "$id" "$abs_dir"
+  setQueryStr "$id" ""
+fi
+
+#query_str=`getQueryStr $id`
+
+################################################################ main
+
+#echo $(getList $id | fzfnav2 "$id" "$dir" "" "normal" "" "$mode" "$hide_preview")
+#echo $(getList $id | fzfnav2 "$id" "$dir" "" "" "" "$mode" "$hide_preview")
+getList $id | fzfnav2 "$id" "$dir" "" "" "" "$mode" "$hide_preview"
+#normalView
+

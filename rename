@@ -1,0 +1,34 @@
+#!/bin/bash -e
+
+input=$(getName $MYPID)
+input_arr=($input)
+orig_name=${input_arr[0]}
+echo "renaming: ${orig_name}"
+read -e -i $orig_name -p 'new name: ' new_name
+#new_name=$(echo "$new_name" | xargs)
+new_name=$(trimWhitespace "$new_name")
+
+abs_dir="$(getAbsDir $MYPID)"
+
+if [[ "$new_name" == "/"* ]]; then
+  dest="$new_name"
+else
+  dest="$abs_dir/$new_name"
+fi
+
+status="go"
+if [[ -e "$dest" ]]; then
+  echo $dest already exists, f to force, q to abort
+  read -p '' status
+  if [[ "$status" == "q" ]]; then
+    reload
+  elif [[ "$status" == "f" ]]; then
+    status="go"
+  else
+    rename
+  fi
+fi
+
+if [[ "$status" == "go" ]]; then
+  mv "$abs_dir/$orig_name" "$dest"
+fi

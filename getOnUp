@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+id="$1"
+if [[ -e /tmp/nav/$id/on_up ]];then
+  cat /tmp/nav/$id/on_up
+else
+  echo ""
+fi

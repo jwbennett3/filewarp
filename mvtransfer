@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+from="$1"
+
+if [[ "$from" == "left" ]];then
+  from_path=`getAbsDir $LEFT_PID`/`getName $LEFT_PID`
+  to_path=`getAbsDir $RIGHT_PID`
+else
+  from_path=`getAbsDir $RIGHT_PID`/`getName $RIGHT_PID`
+  to_path=`getAbsDir $LEFT_PID`
+fi
+
+from_path=`cleanFilePath $from_path`
+
+if [[ "$from_path" != "/" ]];then
+  mv "$from_path" "$to_path"
+fi
+

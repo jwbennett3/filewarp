@@ -1,0 +1,57 @@
+#!/bin/bash
+
+id="$2"
+abs_dir=`getAbsDir "$id"`
+
+
+header_str=$(cat <<-EOM
+pwd=$(basename $abs_dir):$abs_dir
+EOM
+)
+#-----------------------------------------
+
+#if [[ "$(getLeftId)" == "$id" ]];then
+  #echo "LEFT"
+#else
+  echo ""
+#fi
+#if [[ "$(getRightId)" == "$id" ]];then
+  #echo "RIGHT"
+#else
+  echo ""
+#fi
+
+#if [[ rightIsSet ]];then
+  #echo $(getRight)
+#else
+  echo ""
+#fi
+echo $header_str
+echo "------------------------------------------"
+#echo ""
+
+input=$(trimWhitespace "$1")
+if [[ -z "$input" || "$input" == "total" ]];then
+ echo ""
+else
+#echo $abs_dir >> /tmp/deb
+
+view=`getView "$2"`
+sort_by=`getSortBy "$2"`
+
+arg=$(getArg "$id" "$1")
+
+
+path="$abs_dir/$arg"
+
+#echo $path >> /tmp/deb
+if [[ -d "$path" ]];then
+  list2 "$path" | awk '{print $10, $11, $12}'
+elif [[ -f "$path" && ! $(file -b --mime-type "$path") == *"executable"* && ! $(file -b --mime-type "$path") == *"iso"*  ]]; then
+  head -n 1000 "$path"
+  #pygmentize -g "$path"
+fi
+#mpv -vo=tct "$path"
+#kitty +kitten icat "$path"
+fi
+

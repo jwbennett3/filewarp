@@ -1,0 +1,13 @@
+#!/bin/bash
+
+id="$1"
+abs_dir=`getAbsDir "$id"`
+arg=`getArg "$id" "$2"`
+src="$abs_dir/$arg"
+dest="$abs_dir/$arg.bak"
+
+#copy "$src" "$dest"
+cp "$src" "$dest"
+
+
+

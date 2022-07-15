@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+id="$1"
+
+abs_dir=`getAbsDir "$id"`
+arg=`getArg "$id" "$2"`
+path=$abs_dir/$arg
+
+printf $path | xclip -selection clipboard
+

@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+id="$1"
+
+if [[ -e /tmp/nav/$id/view ]];then
+  cat /tmp/nav/$id/view
+else
+  echo "normalView"
+fi
+

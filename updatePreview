@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+path=`cat /tmp/nav/path``cat /tmp/nav/cursor_at`
+#echo "$path" >> /tmp/deb
+if [[ -d "$path" ]];then
+  list2 "$path" | awk '{print $10, $11, $12}' > /tmp/nav/preview
+elif [[ -f "$path" ]];then
+  head -n 1000 $path > /tmp/nav/preview
+fi
+

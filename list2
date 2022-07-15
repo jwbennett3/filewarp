@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+
+if [[ -z "$2" ]];then
+  sort_by="alpha"
+else
+  sort_by="$2"
+fi
+
+if [[ "$sort_by" == "alpha" ]];then
+ sudo ls -GAlF "$1" --color=always --group-directories-first --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r'
+else
+ sudo ls -GAlFt "$1" --color=always --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r'
+fi

@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+id="$1"
+sort_by=`getSortBy "$id"`
+view=`getView "$id"`
+
+if [[ "$view" == "duView" ]];then
+  if [[ $sort_by == "alpha" ]]; then
+    setSortBy "$id" "size"
+  elif [[ $sort_by == "size" ]]; then
+    setSortBy "$id" "alpha"
+  fi
+else
+  if [[ $sort_by == "alpha" ]]; then
+    setSortBy "$id" "time"
+    setView  "$id" "listView"
+  elif [[ $sort_by == "time" ]]; then
+    setSortBy "$id" "alpha"
+  fi
+fi

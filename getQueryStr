@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+id="$1"
+if [[ -e /tmp/nav/$id/query_str ]];then
+  cat /tmp/nav/$id/query_str
+else
+  echo ""
+fi

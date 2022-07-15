@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+abs_dir=`getAbsDir "$MYPID"`
+read -e -p 'new dir:' dirname
+path="$abs_dir/$dirname"
+mkdir  "$path"
+setAbsDir $MYPID "$path"
+#sudo chown $USER:$USER $name
+
+

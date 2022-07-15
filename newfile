@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+abs_dir=`getAbsDir "$MYPID"`
+
+read -e -p 'new file:' filename
+path="$abs_dir/$filename"
+touch "$path"
+echo "$path" > /tmp/output
+
+#on_open=`getOnOpen "$id"`
+#eval "$on_open $path"
+

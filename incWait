@@ -1,0 +1,9 @@
+#!/bin/bash -e
+
+
+trunc_wait=$(python -c "print(int($wait))")
+if [[ "$trunc_wait" -lt "300" ]];then
+  export wait=$(python -c "print('{:.1f}'.format($wait+0.1))")
+else
+  export wait=300
+fi

@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+id="$1"
+mkdir -p /tmp/nav/$id
+name=`getArg $id "$2"`
+echo "$(trimWhitespace $name)" > /tmp/nav/$id/name
+
+

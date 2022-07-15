@@ -1,0 +1,76 @@
+#!/bin/bash -e
+
+id="$1"
+abs_dir=`getAbsDir "$id"`
+view=`getView "$id"`
+sort_by=`getSortBy "$id"`
+
+if [[ "$view" == "normalView" ]];then
+  arg="$2"
+elif [[ "$view" == "duView" ]];then
+  arg=$(removeFirstWord "$2")
+elif [[ "$sort_by" == "alpha" ]]; then
+  in_args=($2)
+  arg=${in_args[2]}
+
+else
+  in_args=($2)
+  arg=${in_args[3]}
+fi
+
+if [[ -L "$abs_dir/$(echo $arg | awk '{print $1}')" ]];then
+  echo $(echo $arg | awk '{print $1}')
+else
+  echo "$(cleanFilePath "$arg")" >> /tmp/deb
+  echo $(cleanFilePath "$arg")
+fi
+
+
+###### form original nav main .. could be some useful code here
+#processCmd()
+#{
+#cmd="$1"
+#input="$2"
+
+#input=$(cleanFilePath "$input")
+#eval "$cmd '$input'"
+#}
+
+
+#out=$(eval "$view $dir")
+#export view=`getView $id`
+#if [[ $view == "listView" ]]; then
+    #first_arg=$(echo $out | awk  '{print $1}')
+    #cmd_removed==$(removeFirstWord $out)
+    #num_words=$(echo $cmd_removed | wc -w)
+    #out_arr=($cmd_removed)
+    #if [[ "$first_arg" == "modch" ]];then
+      #rest_args=$(echo $out | awk  '{print $2}')
+    #elif [[ "$sort_by" == "alpha" ]];then
+      #i=2
+      #rest_args=""
+      #while [[ $i -lt $num_words ]];do
+        #rest_args="$rest_args ${out_arr[$i]}"
+        #((i=i+3))
+      #done
+    #else
+      #let i=3
+      #rest_args=""
+      #while [[ $i -lt $num_words ]];do
+        #rest_args="$rest_args ${out_arr[$i]}"
+        #((i=i+4))
+      #done
+    #fi
+#else
+  #first_arg=$(echo $out | awk  '{print $1}')
+  #rest_args=$(removeFirstWord $out)
+  #if [[ "$rest_args" == "toggle"* ]];then
+    #rest_args=""
+  #fi
+#fi
+
+#if [[ "$rest_args" == "$first_arg" ]];then
+  #rest_args=""
+#fi
+#processCmd "$first_arg" "$rest_args"
+

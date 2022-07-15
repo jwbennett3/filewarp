@@ -1,0 +1,16 @@
+#!/bin/bash
+
+let curr_row=`cat /tmp/nav/row`
+echo $abs_dir >> /tmp/deb
+count=$(ls $abs_dir | wc -w)
+if [[ $curr_row -lt $count ]];then
+  ((curr_row++))
+  #listing="\n $(ls $abs_dir)"
+  listing=$(eval "$FZF_DEFAULT_COMMAND" | awk '{print $1}' | perl -pe 's/\e([^\[\]]|\[.*?[a-zA-Z]|\].*?\a)//g')
+  listing="\n $listing"
+  listing_arr=($listing)
+  echo ${listing_arr[$curr_row]} > /tmp/nav/cursor_at
+  echo $curr_row > /tmp/nav/row
+  updatePreview
+fi
+

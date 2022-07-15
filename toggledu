@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+id="$1"
+view=`getView "$id"`
+
+if [[ $view == "listView" ]]; then
+  setView "$id" "duView"
+  setSortBy "$id" "alpha"
+elif [[ $view == "normalView" ]]; then
+  setView "$id" "duView"
+elif [[ $view == "duView" ]]; then
+  setView "$id" "normalView"
+fi
+

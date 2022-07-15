@@ -1,0 +1,84 @@
+#!/bin/bash -e
+
+#if [[ $context == home ]];then
+#FILE_TYPES=$(cat <<-END
+#java
+#\nbash
+#\npython
+#END
+#)
+#else
+#FILE_TYPES=$(cat <<-END
+#bash
+#\npython
+#\njava
+#END
+#)
+#fi
+
+#type=$(echo -e $FILE_TYPES | fzf)
+
+type="$1"
+#type=$(trimWhitespace $type)
+
+read -e -p "new $type:" filename
+echo $filename >> /tmp/deb
+path="`getAbsDir $MYPID`/$filename"
+echo $type >> /tmp/deb
+
+if [[ -e "$path" ]];then
+  echo $path already exists, f to force, any other key to abort
+  read -p '' status
+  if [[ "$status" != "f" ]]; then
+    exit 0
+  fi
+fi
+
+
+case $type in
+bash)
+  echo a >> /tmp/deb
+  echo '#!/bin/bash -e' > $path
+  echo b >> /tmp/deb
+  sudo chmod +x $path
+  echo c >> /tmp/deb
+;;
+python)
+  echo '#!/usr/bin/env python' > $path
+  sudo chmod +x $path
+;;
+java)
+  filename=${filename/.java/}
+  path="`getAbsDir $MYPID`/$filename"
+  class_path=${path#/mnt/drive1/symboldragon}
+  class_path=${class_path#/code/}
+  class_path=${class_path//\//.}
+  echo $filename
+  class_path=`python << EOF
+class_path_split="$class_path".split('.')
+i=0
+while class_path_split[i] != 'src' and i<len(class_path_split)-1:
+    i+=1
+i+=1
+print(".".join(class_path_split[i:len(class_path_split)-1]))
+EOF
+`
+path="`getAbsDir $MYPID`/$filename".java
+
+echo $class_path
+  echo "package $class_path;" > $path
+  echo "" >> $path
+  echo "public class $filename{" >> $path
+  echo "//*/////////////////////////////////////////////////////////////////////////////" >> $path
+  echo "//*/////////////////////////////////////////////////////////////////////////////" >> $path
+  echo '}' >> $path
+;;
+esac
+
+#eval "$on_open_in $path"
+#addRecentFile "$path" "$$"
+#echo "$path" > /tmp/output
+
+
+
+

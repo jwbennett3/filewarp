@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+id="$1"
+view=`getView "$id"`
+
+if [[ $view == "listView" ]]; then
+  #echo "normalView" > /tmp/nav/view
+  #echo "alpha" > /tmp/nav/sort_by
+  setView "$id" "normalView"
+  setSortBy "$id" "alpha"
+elif [[ $view == "normalView" ]]; then
+  #echo "listView" > /tmp/nav/view
+  setView "$id" "listView"
+fi

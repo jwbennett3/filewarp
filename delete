@@ -1,0 +1,49 @@
+#!/bin/bash
+
+id="$1"
+if [[ $HOSTNAME == optimus && -z "$(ls /data)" ]];then
+  #ssh joe@conan 'mv "$path" "$trash/$arg"'
+  trash="/home/joe/trash"
+else
+  trash="/data/tmp/trash"
+fi
+#trash="/optimus/home/joe/trash"
+mkdir -p $trash
+
+abs_dir=`getAbsDir "$id"`
+
+view=`getView "$id"`
+sort_by=`getSortBy "$id"`
+
+arg=$(getArg "$id" "$2")
+if [[ -z "$arg" || "$arg" == *"total"* ]];then
+  exit 0
+fi
+path="$abs_dir/$arg"
+
+echo $arg | awk '{print $1}' >> /tmp/deb
+echo $path >> /tmp/deb
+
+if [[ -L "$path" ]];then
+  sudo rm "$path"
+elif [[ -e "$trash/$arg" ]];then
+    echo deleting $arg $(du -sh "$trash/$arg" 2> /dev/null | awk '{print $1}') > /tmp/nav/$id/console
+    sudo rm -rf "$trash/$arg" &
+    wait=.1
+    while [[ -e "$trash/$arg" ]];do
+      echo deleting $arg $(du -sh "$trash/$arg" 2> /dev/null | awk '{print $1}') > /tmp/nav/$id/console
+      if [[ -e "$trash/$arg" ]];then
+        sleep $wait
+      fi
+      . incWait
+    done
+    echo deleting $path $(du -sh "$path" 2> /dev/null | awk '{print $1}') > /tmp/nav/$id/console
+    sudo mv "$path" "$trash/$arg"
+    echo deleting $path $(du -sh "$path" 2> /dev/null | awk '{print $1}') > /tmp/nav/$id/console
+
+elif [[ -e "$path" ]];then
+    echo deleting $path $(du -sh "$path" 2> /dev/null | awk '{print $1}') > /tmp/nav/$id/console
+    sudo mv "$path" "$trash/$arg"
+    echo deleting $path $(du -sh "$path" 2> /dev/null | awk '{print $1}') > /tmp/nav/$id/console
+fi
+

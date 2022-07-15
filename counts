@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+
+input=`getName $MYPID`
+input=$(removeTrailingSlashes $input)
+
+abs_dir="`getAbsDir $MYPID`"
+dest="$abs_dir/$input"
+
+#watch "echo -e num files: $(find "$dest" -type f | wc -l) \n rsietn"
+watch -n .5 getCounts
+#read
+
+

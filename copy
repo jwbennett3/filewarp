@@ -1,0 +1,59 @@
+#!/bin/bash -e
+
+#src_id="$1"
+#dest_id="$2"
+
+src="$1"
+dest="$2"
+
+status="go"
+if [[ -e "$dest" ]]; then
+  echo $dest already exists, f to force, any other key to abort
+  read -p '' status
+  if [[ "$status" == "f" ]]; then
+    status="go"
+    rm -rf "$dest"
+  else
+    status="nogo"
+  fi
+fi
+
+if [[ $status == "go" ]];then
+#src=`getAbsDir $src_id`/`getName $src_id`
+#dest=`getAbsDir $dest_id`
+#if [[ -f "$src" ]];then
+  #echo -e "\n$src 🡺  $dest"
+  #mod=$(stat -c "%a" "$src")
+  #pv -p "$src" > "$dest"
+  #sudo chmod $mod "$dest"
+#else
+  #sum=$(md5sum "$src")
+  orig_size=$(sudo du "$src" | awk '{print $1}')
+  #/usr/bin/cp -r "$src" "$dest" & > /dev/null 2>&1
+  sudo /usr/bin/cp -r --preserve=mode,ownership "$src" "$dest" &
+  pid=$!
+  #get rid of job done message
+  disown $!
+  #/usr/bin/cp -r "$src" "$dest" &
+  #pid=$(sudo pidof cp)
+  #if [[ -e "$dest" ]];then
+    #curr_size=$(du "$dest" | awk '{print $1}')
+  #else
+    curr_size=0
+  #fi
+  export wait=.1
+  #while [[ "$orig_size" != "$curr_size" ]];do
+   while [[ ! -z $(sudo ps cax | grep $pid) && "$orig_size" != "$curr_size" ]];do
+   #while [[ $sum != $(md5sum "$dest") ]];do
+    #clear
+    #echo -e "\n$orig_name 🡺 $new_name ($curr_size/$orig_size)"
+    #clear
+    prog $curr_size $orig_size
+    sleep $wait
+    curr_size=$(sudo du "$dest" | awk '{print $1}')
+    #source incWait
+  done
+  prog 1 1
+  sleep .1
+#fi
+fi

@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+id="$1"
+if [[ -e /tmp/nav/$id/sort_by ]];then
+  cat /tmp/nav/$id/sort_by
+else
+  echo "alpha"
+fi

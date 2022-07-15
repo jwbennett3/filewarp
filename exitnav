@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+id="$1"
+abs_dir=`getAbsDir "$id"`
+name=`getName "$id"`
+path="$abs_dir/$name"
+
+on_exit=`getOnExit "$id"`
+
+#echo "#$path" > /tmp/output
+
+_exitnav "$id" "$on_exit"
+
+
