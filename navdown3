@@ -1,3 +1,0 @@
-#!/bin/bash -e
-
-nvim -c "colorscheme delek | call RunTerminalCmd('ProjTree2','ExitVim')"
