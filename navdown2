@@ -10,7 +10,7 @@ fi
 path="$1"
 mode="$2"
 
-NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" nvim -u $VIMHOME/nvim/nav-enter.vim -c "colorscheme delek | call ProjTreeFromTerminal('$path','$mode')"
+NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" nvim -u $NVIMHOME/nav-enter.vim -c "colorscheme delek | call ProjTreeFromTerminal('$path','$mode')"
 
 directory=$(getAbsDir $MYPID)
 name=$(getName $MYPID)

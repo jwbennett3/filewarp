@@ -8,7 +8,7 @@ else
 fi
 
 if [[ "$sort_by" == "alpha" ]];then
- sudo ls -GAlF "$1" --color=always --group-directories-first --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r'
+  ls -GAlF "$1" --color=always --group-directories-first --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r'
 else
- sudo ls -GAlFt "$1" --color=always --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r'
+  ls -GAlFt "$1" --color=always --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r'
 fi
