@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+str="$@"
+echo $str | cut -d' ' -f2-
+

@@ -10,9 +10,7 @@
   #apk add debootstrap
 #fi
 
-if [[ -z "$(which debootstrap)" ]];then
-  sudo apt install -y debootstrap
-fi
+
 
 chroot_image_dir=${chroot_image_dir:-/slowdata/cloud/chroots}
 if [[ ! -e "$chroot_image_dir" ]];then
@@ -21,6 +19,10 @@ if [[ ! -e "$chroot_image_dir" ]];then
 fi
 
 build_dir="/tmp/filewarp_build"
+
+#[[ -e /tmp/filewarp_build/file-warp/proc  ]] && mount | grep -q /tmp/filewarp_build/file-warp/proc && sudo umount -l /tmp/filewarp_build/file-warp/proc && sudo rmdir "$build_dir/file-warp/proc"
+#[[ -e /tmp/filewarp_build/file-warp/sys ]] && mount | grep -q /tmp/filewarp_build/file-warp/sys && sudo umount -l /tmp/filewarp_build/file-warp/sys && sudo rmdir "$build_dir/file-warp/sys"
+[[ -e /tmp/filewarp_build/file-warp/dev ]] && mount | grep -q /tmp/filewarp_build/file-warp/dev && sudo umount -l /tmp/filewarp_build/file-warp/dev && sudo rmdir "$build_dir/file-warp/dev"
 
 sudo rm -rf "$build_dir"
 mkdir -p "$build_dir/resources"
@@ -34,6 +36,9 @@ if [[ -e "$chroot_image_dir/ubuntu-jammy.tar.gz" ]];then
   mkdir "$full_layer_name"
   sudo tar -xf "$chroot_image_dir/ubuntu-jammy.tar.gz" -C "$full_layer_name"
 else
+  if [[ -z "$(which debootstrap)" ]];then
+    sudo apt install -y debootstrap
+  fi
   sudo debootstrap --variant=buildd jammy "$full_layer_name"
 fi
 
@@ -46,9 +51,25 @@ cd ..
 
 
 sudo cp -r resources/* "$full_layer_name/usr/bin"
+sudo mkdir -p "$full_layer_name/share/nvim/syntax"
+sudo mv "$full_layer_name/usr/bin/syntax.vim" "$full_layer_name/share/nvim/syntax/syntax.vim"
 
-#sudo chroot "$full_layer_name"
+git clone https://github.com/junegunn/fzf.git
+cd fzf
+git checkout 3f90fb42d8871920138ace9878502f22a4d91e85
+cd ..
+#mv fzf/bin/fzf "$full_layer_name/usr/bin"
+mv fzf "$full_layer_name"
 
+#sudo mount -t proc /proc /tmp/filewarp_build/file-warp/proc
+#sudo mount --rbind /sys /tmp/filewarp_build/file-warp/sys
+sudo mount --rbind /dev /tmp/filewarp_build/file-warp/dev
+
+
+sudo chroot "$full_layer_name" chroot_install.sh
+
+
+#exit
 
 
 

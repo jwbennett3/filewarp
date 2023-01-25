@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+
+file_path="$@"
+
+file_path=$(trimWhitespace "$file_path")
+file_path=$(removeTrailingSlashes "$file_path")
+###remove * from file name (if it's executable)
+file_path=${file_path/\*/}
+
+
+file_path=${file_path#/mnt/drive1}
+file_path=${file_path#/mnt}
+file_path=${file_path#/optimus}
+file_path=${file_path#/conan}
+
+file_path=${file_path/\/home\/joe\/config/\/config}
+file_path=${file_path/\/data\/cloud\/config/\/config}
+
+file_path=${file_path/\/home\/joe\/cache/\/cache}
+file_path=${file_path/\/data\/cloud\/cache/\/cache}
+
+
+file_path=${file_path/\/data\/code/\/code}
+
+
+#file_path=${file_path#/home/joe/links}
+#file_path=${file_path/\/home\/joe\/links\/wandpkg/\/code\/wandpkg}
+#file_path=${file_path/\/home\/joe\/links\/bh/\/code\/bh}
+
+#escape spaces
+file_path="${file_path/ /\\ }"
+
+
+echo "$file_path"

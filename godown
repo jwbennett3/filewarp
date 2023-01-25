@@ -1,0 +1,33 @@
+#!/bin/bash -e
+
+
+id="$1"
+
+setQueryStr "$id" ""
+
+#provided by fzfgodown, which I believe is a front to leave old code intact
+#input=$(getArg "$id" "$2")
+input="$2"
+
+#on_enter=`getOnEnter "$id"`
+on_open=`getOnOpen "$id"`
+
+abs_dir=`getAbsDir "$id"`
+path="$abs_dir/$input"
+#path=$(removeTrailingSlashes $path)
+#echo "$id" >> /tmp/deb
+#echo $path >> /tmp/deb
+#echo "$on_open" >> /tmp/deb
+if [[ -d "$path" ]]; then
+  #if [ ! -z "$on_enter" ]; then
+    #eval "$on_enter $path"
+  #fi
+  setAbsDir "$id" "$path"
+  addRecentDirectory "$path" "$id"
+elif [[ -f "$path" ]]; then
+  if [ ! -z "$on_open" ]; then
+    eval "$on_open $path"
+  fi
+  addRecentFile "$path" "$id"
+fi
+

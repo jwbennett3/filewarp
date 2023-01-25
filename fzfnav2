@@ -1,0 +1,234 @@
+#!/bin/bash -e
+id="$1"
+dir="$2"
+mode="$3"
+hide_preview="$4"
+
+#header_str="$3"
+#search_by="$4"
+#query_str="$5"
+if [[ -z "$mode" ]];then
+  mode="$6"
+fi
+if [[ -z "$hide_preview" ]];then
+  hide_preview="$7"
+fi
+
+if [[ -z "$on_enter" ]];then
+  on_enter="echo;"
+fi
+if [[ -z "$on_up" ]];then
+  on_up="navupr"
+fi
+if [[ -z "$on_open" ]];then
+  on_open="addRecentFile"
+fi
+if [[ -z "$alt_open" ]];then
+  alt_open="$on_open"
+fi
+if [[ -z "$on_exit" ]];then
+  on_exit="command cd"
+fi
+if [[ -z "$alt_exit" ]];then
+  alt_exit="echo;"
+fi
+
+if [[ -z "$view" ]]; then
+  view="normalView"
+fi
+if [[ -z "$sort_by" ]]; then
+  sort_by="alpha"
+fi
+
+if [[ -z "$mode" ]]; then
+  mode="normal"
+fi
+if [[ -z "$id" ]];then
+  id="$$"
+fi
+
+on_enter_state=`getOnEnter "$id"`
+if [[ -z "$on_enter_state" ]];then
+  setOnEnter "$id" "$on_enter"
+fi
+
+#on_exit_state=`getOnExit "$id"`
+#if [[ -z "$on_exit_state" ]];then
+  setOnExit "$id" "$on_exit"
+#fi
+
+alt_on_exit_state=`getAltOnExit "$id"`
+if [[ -z "$alt_on_exit_state" ]];then
+  setAltOnExit "$id" "$alt_on_exit"
+fi
+
+on_up_state=`getOnUp "$id"`
+if [[ -z "$on_up_state" ]];then
+  setOnUp "$id" "$on_up"
+fi
+
+on_open_state=`getOnOpen "$id"`
+if [[ -z "$on_open_state" ]];then
+  setOnOpen "$id" "$on_open"
+fi
+
+abs_dir=`getAbsDir "$id"`
+if [[ ! -z "$dir" ]];then
+  export abs_dir=$(realpath -s $dir)
+  setAbsDir "$id" "$abs_dir"
+  setQueryStr "$id" ""
+fi
+
+
+
+
+#mode="normal"
+#mode="insert"
+
+#F12 - nop
+refresh="f6"
+leave="enter"
+altleave="alt-enter"
+toggledu="alt-d"
+toggleview="alt-l"
+togglesortby="ctrl-alt-l"
+togglepreview="alt-u"
+up="ctrl-i"
+down="ctrl-e"
+page_up="alt-i"
+page_down="alt-e"
+goto_bottom="ctrl-alt-e"
+goto_top="ctrl-alt-i"
+preview_up="ctrl-s"
+preview_down="ctrl-r"
+preview_page_up="ctrl-alt-s"
+preview_page_down="ctrl-alt-r"
+toggle="I"
+toggle_up="f12"
+toggle_down="f12"
+jump="ctrl-h"
+watchdir="ctrl-w"
+goup="ctrl-n"
+godown="ctrl-o"
+delete="f4"
+fdelete="f12"
+newdir="ctrl-d"
+newdircd="ctrl-alt-d"
+newfile="ctrl-k"
+newfiletype="f12"
+quicksearch="f12"
+getpath="alt-c"
+bak="alt-b"
+unbakf="ctrl-alt-b"
+bakf="ctrl-b"
+
+set_prompt_to_normal="f10"
+set_prompt_to_insert="f11"
+
+#du -sh by selection (probably mark the exclusions)
+#jumpdown
+#wcat
+#cut()
+#godown="i"
+#--bind="alt-o:execute(echo jumpdown)+jump-accept" \
+#fdelete="D"
+#------------------------------------------
+#fdelete()
+#{
+#trash="/data/tmp"
+#mkdir -p $trash
+#for arg in $input;do
+  #arg="$(removeTrailingSlashes $arg)"
+  #path="$abs_dir/$arg"
+  #rm -rf "$path" &
+  #wait=.1
+  #while [[ -e "$trash/$arg" ]];do
+    #clear
+    #echo deleting $arg $(du -sh "$path" 2> /dev/null | awk '{print $1}')
+    #if [[ -e "$path" ]];then
+      #sleep $wait
+    #fi
+    #incWait
+  #done
+#done
+#reload
+#}
+#------------------------------------------
+
+
+
+if [[ "$mode" == "normal" ]];then
+opts=$(cat <<-END
+--prompt=(normal)
+--multi
+--border=rounded
+--pointer=~
+--marker=*
+--color=bg:#17171A,bg+:#3F3F3F,info:#BDBB72,border:#6B6B6B,spinner:#98BC99
+--color=hl:#719872,fg:#D9D9D9,header:#719872,fg+:#D9D9D9
+--color=pointer:#E12672,marker:#E17899,prompt:#98BEDE,hl+:#98BC99
+END
+)
+else
+opts=$(cat <<-END
+--prompt=>
+--pointer=>
+END
+)
+fi
+
+head_str=$(cat <<-EOM
+$MYPID
+----------------------------------------
+EOM
+)
+if [[ -z "$hide_preview" ]];then
+  preview_window="right:50%"
+else
+  preview_window="right:50%,hidden"
+fi
+
+
+fzf --header="$head_str" \
+--preview="getPreview {} $id" \
+--preview-window=$preview_window \
+--query="$(getQueryStr $id)" \
+$opts \
+--bind="change:first" \
+--bind="f7:execute-silent(setName $MYPID {})" \
+--bind="$leave:execute-silent(setName $MYPID {})+execute(exitnav $MYPID)+abort" \
+--bind="$altleave:enter:execute-silent(setName $MYPID {})+execute(altexitnav $MYPID)+accept" \
+--bind="$refresh:reload(getList $MYPID)+refresh-preview+execute-silent(setName $MYPID {})" \
+--bind="$up:up+execute-silent(setName $MYPID {})+reload(getList $MYPID)+refresh-preview" \
+--bind="$down:down+execute-silent(setName $MYPID {})+reload(getList $MYPID)+refresh-preview" \
+--bind="$goup:execute-silent(goup $id)+reload(getList $id)+clear-query" \
+--bind="$godown:execute-silent(fzfgodown $MYPID {})+reload(getList $MYPID)+clear-query" \
+--bind="$page_up:half-page-up+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+--bind="$page_down:half-page-down+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+--bind="$goto_top:first+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+--bind="$goto_bottom:last+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+--bind="$preview_up:preview-up" \
+--bind="$preview_down:preview-down" \
+--bind="$preview_page_up:preview-half-page-up" \
+--bind="$preview_page_down:preview-half-page-down" \
+--bind="$toggle:toggle" \
+--bind="$toggle_up:toggle+up" \
+--bind="$toggle_down:toggle+down" \
+--bind="$toggledu:execute-silent(toggledu $id)+reload(getList $MYPID)" \
+--bind="$toggleview:execute-silent(toggleview $id)+reload(getList $MYPID)" \
+--bind="$togglesortby:execute-silent(togglesortby $id)+reload(getList $MYPID)" \
+--bind="$togglepreview:toggle-preview" \
+--bind="$set_prompt_to_normal:change-prompt((normal))" \
+--bind="$set_prompt_to_insert:change-prompt(>)" \
+--bind="$quicksearch:execute(echo quicksearch)+accept" \
+--bind="$jump:jump" \
+--bind="$watchdir:execute(echo watchdir $MYPID)+accept" \
+--bind="$getpath:execute-silent(getPath $id {})+reload(getList $id)" \
+--bind="$bak:execute-silent(bak $id {})+reload(getList $id)" \
+--bind="$bakf:execute-silent(bakf $id {})+reload(getList $id)" \
+--bind="$unbakf:execute-silent(unbakf $id {})+reload(getList $id)" \
+--bind="$delete:execute-silent(delete $MYPID {})+reload(getList $MYPID)" \
+--bind="$fdelete:execute(echo fdelete)+accept" \
+
+
+
