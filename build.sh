@@ -64,7 +64,7 @@ mv fzf "$full_layer_name"
 
 #sudo mount -t proc /proc /tmp/filewarp_build/file-warp/proc
 #sudo mount --rbind /sys /tmp/filewarp_build/file-warp/sys
-sudo mount --rbind /dev /tmp/filewarp_build/file-warp/dev
+#sudo mount --rbind /dev /tmp/filewarp_build/file-warp/dev
 
 
 sudo chroot "$full_layer_name" chroot_install.sh

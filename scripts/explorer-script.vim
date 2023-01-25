@@ -144,6 +144,7 @@ function UpdatePath(...)
     if len(string(path)) > max_chars
       :let path = "...".path[len(path)-max_chars:len(path)]
     endif
+    let path = substitute(path, "/host" , "", "g")
     :exe "setlocal statusline=".path
 endfunction
 
