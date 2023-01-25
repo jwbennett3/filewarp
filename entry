@@ -1,0 +1,4 @@
+#!/bin/bash -e
+
+source /usr/bin/entry_args
+navdown2 "$start"
