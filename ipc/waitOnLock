@@ -1,0 +1,18 @@
+#!/bin/bash -e
+
+path="$1"
+
+#/usr/bin/mkdir -p "$(dirname "$path")"
+/usr/bin/touch "$path"
+
+# shellcheck disable=SC2034
+inotifywait -e delete "$path" > /dev/null 2>&1 || x="go on ahead"
+
+
+# Check is Lock File exists, if not create it and set trap on exit
+ #if { set -C; 2>/dev/null >$path; }; then
+         #trap "rm -f $path" EXIT
+ #else
+    #exit
+ #fi
+

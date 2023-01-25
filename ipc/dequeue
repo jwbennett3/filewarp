@@ -1,0 +1,28 @@
+#!/bin/bash -e
+
+requests_path="$1"
+locks_path="$2"
+queue_lock_path="$3"
+
+mkdir -p "$requests_path"
+mkdir -p "$locks_path"
+
+request_id="$(date +%Y_%m_%d_%H_%M_%S)_$PPID_$(uuidgen)"
+request_path=$requests_path/$request_id
+
+reg=/dev/shm/var/dequeue_reg/$PPID
+mkdir -p $(dirname $reg)
+
+echo "$reg" > "$request_path"
+
+releaseLock "$queue_lock_path"
+
+waitOnLock "$locks_path/$request_id"
+
+if [[ -e "$reg" ]];then
+  cat $reg
+else
+  echo "no_response"
+fi
+
+rm -f $reg

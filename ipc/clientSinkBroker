@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+server_name="$1"
+endpoint_name="$2"
+input_reg="$3"
+
+server_path="/dev/shm/servers/$server_name"
+endpoint_path="$server_path/endpoints/$endpoint_name"
+input_path="$endpoint_path/input"
+input_locks_dir="$endpoint_path/input_locks"
+
+queue_lock_path="$endpoint_path/queue_lock"
+
+#echo enqueuing "$input_path" "$input_locks_dir" "$queue_lock_path" "$(cat $input_reg)"
+enqueue "$input_path" "$input_locks_dir" "$queue_lock_path" "$input_reg"
+

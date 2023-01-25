@@ -1,0 +1,162 @@
+#!/bin/bash
+
+queue_path="$1"
+enqueue_requests_path="$2"
+dequeue_requests_path="$3"
+
+enqueue_locks_path="$4"
+dequeue_locks_path="$5"
+
+queue_lock_path="$6"
+
+max_queue_length=${max_queue_length:-10}
+min_lap_time=${min_lap_time:-.5}
+bailout_timeout=${bailout_timeout:-2}
+
+MAX_INT=$(((2**63)-1))
+
+queue_lock_name="queue"
+
+mkdir -p "$queue_path"
+mkdir -p "$enqueue_requests_path"
+mkdir -p "$dequeue_requests_path"
+mkdir -p "$enqueue_locks_path"
+mkdir -p "$dequeue_locks_path"
+mkdir -p $(dirname $queue_lock_path)
+
+
+indexes=$(ls $queue_path)
+if [[ -z "$indexes" ]];then
+  min_index=-1
+  max_index=-1
+else
+  min_index=$(pyt "min $indexes")
+  max_index=$(pyt "max $indexes")
+fi
+
+for request_id in "$enqueue_locks_path";do
+  if [[ ! -e "$enqueue_requests_path/$request_id" ]];then
+    releaseLock "$enqueue_locks_path/$request_id"
+  fi
+done
+
+for request_id in "$dequeue_locks_path";do
+  if [[ ! -e "$dequeue_requests_path/$request_id" ]];then
+    releaseLock "$dequeue_locks_path/$request_id"
+  fi
+done
+
+#===============================================================
+_enqueue()
+{
+local request_id="$1"
+local request_path="$enqueue_requests_path/$request_id"
+
+local item="$(cat $request_path)"
+if [[ "$?" != 0 ]];then
+  title="$queue_path failed!" sendNotification "could not enqueue $request_path"
+fi
+
+releaseLock "$enqueue_locks_path/$request_id"
+rm -f "$request_path"
+
+max_index=$(($max_index+1))
+if [[ $min_index == -1 ]];then
+  min_index=0
+fi
+echo "$item" > "$queue_path/$max_index"
+}
+#-------------------------------------------------
+_dequeue()
+{
+local request_id="$1"
+local request_path="$dequeue_requests_path/$request_id"
+if [[ ! -f "$request_path" ]];then
+  title="$queue_path failed!" sendNotification "could not dequeue $request_path"
+  releaseLock "$dequeue_locks_path/$request_id"
+  return
+fi
+local request_register=$(cat "$request_path") || releaseLock "$dequeue_locks_path/$request_id"
+
+rm -f "$request_path"
+item="$(cat "$queue_path/$min_index")" || releaseLock "$dequeue_locks_path/$request_id"
+rm -f "$queue_path/$min_index"
+min_index=$((min_index+1)) || releaseLock "$dequeue_locks_path/$request_id"
+
+if [[ "$(_queueIsEmpty)" == true ]];then
+  min_index=-1
+  max_index=-1
+fi
+echo "$item" > "$request_register" || releaseLock "$dequeue_locks_path/$request_id"
+
+releaseLock "$dequeue_locks_path/$request_id"
+}
+#-------------------------------------------------
+_queueIsEmpty()
+{
+if [[ -n $(ls "$queue_path") ]];then
+  echo false
+else
+  echo true
+fi
+}
+
+_queueIsFull()
+{
+if [[ $(ls "$queue_path" | wc -w) -lt "$max_queue_length" ]];then
+  echo false
+else
+  echo true
+fi
+}
+#===============================================================
+while true;do
+  enqueue_requests=$(ls "$enqueue_requests_path")
+  if [[ "$(_queueIsFull)" == false && -n "$enqueue_requests" && $max_index != "$MAX_INT" ]];then
+    for request_id in $enqueue_requests;do
+      _enqueue "$request_id"
+      if [[ "$(_queueIsFull)" == true || $max_index == "$MAX_INT" ]];then
+        break
+      fi
+      #these were uncommented (also below) I think to attempt to get higher throughput.
+      #though some concurrency issue was found where it tries to dequeue an empty queue for some reason
+      #dequeue_requests=$(ls "$dequeue_requests_path")
+      #if [[ "$(_queueIsEmpty)" == false && -n "$dequeue_requests" ]];then
+        #ls $queue_path
+        #_dequeue $(pyt "s $dequeue_requests 0")
+      #fi
+    done
+  fi
+
+  dequeue_requests=$(ls "$dequeue_requests_path")
+  if [[ "$(_queueIsEmpty)" == false && -n "$dequeue_requests" ]];then
+    for request_id in $dequeue_requests;do
+      _dequeue "$request_id"
+      if [[ "$(_queueIsEmpty)" == true ]];then
+        break
+      fi
+
+      #enqueue_requests=$(ls "$enqueue_requests_path")
+      #if [[ "$(_queueIsFull)" == false && -n "$enqueue_requests" && $max_index != "$MAX_INT" ]];then
+        #_enqueue $(pyt "s $enqueue_requests 0")
+      #fi
+    done
+  fi
+
+  if [[ "$(_queueIsEmpty)" == true && -z "$(ls $enqueue_requests_path)" ]];then
+    #echo "waiting for enqueue requests"
+    waitOnLock "$queue_lock_path"
+  fi
+  if [[ "$(_queueIsFull)" == true && -z "$(ls $dequeue_requests_path)" ]];then
+    #echo "waiting for dequeue requests"
+    waitOnLock "$queue_lock_path"
+  fi
+
+  if [[ -z "$(ls $enqueue_requests_path)" && -z "$(ls $dequeue_requests_path)" ]];then
+    #echo "waiting for any request"
+    waitOnLock "$queue_lock_path"
+  fi
+  #echo "done waiting $(_queueIsFull) $(ls $dequeue_requests)"
+done
+
+

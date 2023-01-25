@@ -1,0 +1,51 @@
+#!/bin/bash -e
+
+server_name="$1"
+endpoint_name="$2"
+input_reg="$3"
+output_reg="$4"
+
+args=$@
+_sendRequest()
+{
+local hname=${1:-localhost}
+if [[ "$hname" == localhost ]];then
+  output=$(clientBroker "$server_name" "$endpoint_name" "$input_reg" "$output_reg")
+  echo -e "$output"
+else
+  echo -e "$(ssh joe@$hname \"clientBroker $server_name $endpoint_name $input_reg $output_reg\")"
+fi
+}
+
+_sendSinkRequest()
+{
+local hname=${1:-localhost}
+if [[ "$hname" == localhost ]];then
+  clientSinkBroker "$server_name" "$endpoint_name" "$input_reg"
+else
+  ssh joe@$hname "\"$clientSinkBroker\" \"$endpoint_name\" \"$input_reg\""
+fi
+}
+server_host=localhost
+case $server_name in
+  vim-com)
+  case $HOSTNAME in optimus|didgeridoo)
+      server_host=localhost
+    #*)
+      #server_host=somhost
+  esac
+  ;;
+  flat-cache)
+  case $HOSTNAME in
+    *)
+  esac
+;;
+*)
+esac
+
+if [[ -n "$output_reg" ]];then
+  _sendRequest "$hname"
+else
+  _sendSinkRequest "$hname"
+fi
+

@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+request_path="$1"
+bailout_token="$2"
+bailout_timeout=${bailout_timeout:-1}
+#bailout_token="rejected_by_$(basename $(dirname $(dirname $request_path)))"
+#echo "bailout_token:$bailout_token"
+
+sleep "$bailout_timeout"
+if [[ -e "$request_path" ]];then
+  echo "$bailout_token" > "$request_path"
+fi

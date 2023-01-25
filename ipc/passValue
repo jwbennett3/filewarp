@@ -1,0 +1,30 @@
+#!/bin/bash -e
+
+
+param="$1"
+out_path="$2"
+#chown $USER:me $out_path
+mkdir -p $(dirname $out_path)
+
+if [[ -f "$param" ]];then
+  cat "$param" > "$out_path"
+else
+  echo "$param" > "$out_path"
+fi
+
+#if [[ -f "$param" ]];then
+  #if [[ -f "$out_path" ]];then
+    #mkdir -p $(dirname $out_path)
+    #cat "$param" > "$out_path"
+  #else
+    #cat "$param"
+  #fi
+#else
+  #if [[ -f "$out_path" ]];then
+    #mkdir -p $(dirname $out_path)
+    #echo "$param" > "$out_path"
+  #else
+    #echo "$param"
+  #fi
+#fi
+

@@ -1,0 +1,21 @@
+#!/bin/bash -e
+
+path="$1"
+id=${2:-$PPID}
+
+
+in_reg="$(mktmpVar)"
+echo "recent_dirs" > "$in_reg"
+echo -n "$path" >> "$in_reg"
+request flat-cache add "$in_reg"
+
+in_reg="$(mktmpVar)"
+echo "recent_dirs" > "$in_reg"
+echo "$path" >> "$in_reg"
+echo -n "$id" >> "$in_reg"
+request flat-cache addTemporary "$in_reg"
+
+
+#request flat-cache add "recent_dirs $path"
+#request flat-cache addTemporary "recent_dirs $path $id"
+

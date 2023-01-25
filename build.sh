@@ -51,6 +51,7 @@ cd ..
 
 
 sudo cp -r resources/* "$full_layer_name/usr/bin"
+sudo mv  $full_layer_name/usr/bin/ipc/* "$full_layer_name/usr/bin"
 sudo mkdir -p "$full_layer_name/share/nvim/syntax"
 sudo mv "$full_layer_name/usr/bin/syntax.vim" "$full_layer_name/share/nvim/syntax/syntax.vim"
 
