@@ -22,7 +22,8 @@ build_dir="/tmp/filewarp_build"
 
 #[[ -e /tmp/filewarp_build/file-warp/proc  ]] && mount | grep -q /tmp/filewarp_build/file-warp/proc && sudo umount -l /tmp/filewarp_build/file-warp/proc && sudo rmdir "$build_dir/file-warp/proc"
 #[[ -e /tmp/filewarp_build/file-warp/sys ]] && mount | grep -q /tmp/filewarp_build/file-warp/sys && sudo umount -l /tmp/filewarp_build/file-warp/sys && sudo rmdir "$build_dir/file-warp/sys"
-[[ -e /tmp/filewarp_build/file-warp/dev ]] && mount | grep -q /tmp/filewarp_build/file-warp/dev && sudo umount -l /tmp/filewarp_build/file-warp/dev && sudo rmdir "$build_dir/file-warp/dev"
+#[[ -e /tmp/filewarp_build/file-warp/dev ]] && mount | grep -q /tmp/filewarp_build/file-warp/dev && sudo umount -l /tmp/filewarp_build/file-warp/dev && sudo rmdir "$build_dir/file-warp/dev"
+[[ -e /tmp/filewarp_build/file-warp/host ]] && mount | grep -q /tmp/filewarp_build/file-warp/host && sudo umount -l /tmp/filewarp_build/file-warp/host && sudo rmdir "$build_dir/file-warp/host"
 
 sudo rm -rf "$build_dir"
 mkdir -p "$build_dir/resources"
@@ -32,15 +33,20 @@ cd "$build_dir"
 full_layer_name="file-warp"
 
 #mkdir -p "$chroot_image_dir/$full_layer_name"
-if [[ -e "$chroot_image_dir/ubuntu-jammy.tar.gz" ]];then
-  mkdir "$full_layer_name"
-  sudo tar -xf "$chroot_image_dir/ubuntu-jammy.tar.gz" -C "$full_layer_name"
-else
+if [[ ! -e "$chroot_image_dir/ubuntu-jammy.tar.gz" ]];then
   if [[ -z "$(which debootstrap)" ]];then
     sudo apt install -y debootstrap
   fi
-  sudo debootstrap --variant=buildd jammy "$full_layer_name"
+  sudo debootstrap --variant=buildd jammy ubuntu-jammy
+  cd ubuntu-jammy
+  sudo tar -zcf ubuntu-jammy.tar.gz ./*
+  cd ..
+  sudo mv ubuntu-jammy.tar.gz "$chroot_image_dir"
+  sudo rm -rf ubuntu-jammy
 fi
+mkdir "$full_layer_name"
+sudo tar -xf "$chroot_image_dir/ubuntu-jammy.tar.gz" -C "$full_layer_name"
+
 
 cd resources
 #nvim="$(ls nvim-*.tar.gz)"
@@ -66,12 +72,17 @@ mv fzf "$full_layer_name"
 #sudo mount --rbind /sys /tmp/filewarp_build/file-warp/sys
 #sudo mount --rbind /dev /tmp/filewarp_build/file-warp/dev
 
+mkdir "$full_layer_name/host"
+
+
 
 sudo chroot "$full_layer_name" chroot_install.sh
 
+sudo rm -rf $full_layer_name/dev
+sudo ln -s /host/dev $full_layer_name/dev
 
-#exit
-
+tar -zcf "$full_layer_name.tar.gz" "$full_layer_name"
+mv "$full_layer_name.tar.gz" "$chroot_image_dir/"
 
 
 
