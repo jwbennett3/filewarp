@@ -23,11 +23,11 @@ if [[ -d "$path" ]]; then
     #eval "$on_enter $path"
   #fi
   setAbsDir "$id" "$path"
-  addRecentDirectory "$path" "$id"
+  addRecentDirectory "${path#/host}" "$id"
 elif [[ -f "$path" ]]; then
   if [ ! -z "$on_open" ]; then
     eval "$on_open $path"
   fi
-  addRecentFile "$path" "$id"
+  addRecentFile "${path#/host}" "$id"
 fi
 
