@@ -1,0 +1,4 @@
+# pack-refs with: peeled fully-peeled 
+2d9107b1e1ceb3d4f118647f2cd5f9165172ccf9 refs/remotes/origin/autoinsert-arg
+7bc6e970a1ebc466a701b837a4fd2898e67fb23f refs/remotes/origin/gf-command
+4a1938457489fe072acf2fbbe7142a3cfb0d8ad8 refs/remotes/origin/master
