@@ -81,7 +81,7 @@ sudo chroot "$full_layer_name" chroot_install.sh
 sudo rm -rf $full_layer_name/dev
 sudo ln -s /host/dev $full_layer_name/dev
 
-tar -zcf "$full_layer_name.tar.gz" "$full_layer_name"
+sudo tar -zcf "$full_layer_name.tar.gz" "$full_layer_name"
 mv "$full_layer_name.tar.gz" "$chroot_image_dir/"
 
 
