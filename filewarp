@@ -1,0 +1,33 @@
+#!/bin/bash -e
+
+start="$1"
+from_ide=${2:-0}
+
+if [[ $from_ide == 1 ]];then
+  export id=0
+else
+  export id=$PPID
+fi
+
+
+navdown2 "$start" "normal"
+
+
+abs_dir="$(cat "/tmp/nav/$id/abs_dir")"
+name="$(cat "/tmp/nav/$id/name")"
+
+if [[ $from_ide == 0 ]];then
+  if [[ $TERM == "xterm-kitty" ]];then
+    if [[ -f "$abs_dir/$name" ]];then
+      openFileForEditing server$INDEX "$abs_dir/$name" &
+    else
+      cd "$abs_dir"
+    fi
+  else
+    if [[ -f "$abs_dir/$name" ]];then
+      nvim "$abs_dir/$name"
+    else
+      cd "$abs_dir"
+    fi
+  fi
+fi
