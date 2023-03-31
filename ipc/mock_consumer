@@ -1,8 +1,0 @@
-#!/bin/bash -e
-
-rate=${1:-1}
-
-while true;do
-  dequeue /tmp/dequeue /tmp/dequeue_locks  /tmp/queue_lock
-  sleep $rate
-done

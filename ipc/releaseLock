@@ -1,4 +1,0 @@
-#!/bin/bash -e
-
-path="$1"
-/usr/bin/rm -f "$path"

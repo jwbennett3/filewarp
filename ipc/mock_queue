@@ -1,3 +1,0 @@
-#!/bin/bash -e
-
-queueBroker /tmp/queue /tmp/enqueue /tmp/dequeue /tmp/enqueue_locks /tmp/dequeue_locks /tmp/queue_lock
