@@ -9,7 +9,7 @@ else
   export id=$PPID
 fi
 
-
+mkdir -p "$FILE_WARP_TMP_PATH"
 navdown2 "$start" "normal"
 
 
