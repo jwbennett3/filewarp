@@ -18,7 +18,7 @@ function FQuitNav()
   ":call feedkeys("\<C-w>h","n")
   ":silent !echo "" > /tmp/output
   if ! $GVIM
-    :silent !touch $FILE_WARP_TMP_PATH//$LEFT_PID/killf
+    :silent !touch /tmp/nav/$LEFT_PID/killf
     :q!
     :q!
   endif
@@ -27,12 +27,12 @@ endfunction
 function QuitNav()
   if ! $GVIM
     if $panel == 'right'
-      :let abs_dir = Read("$FILE_WARP_TMP_PATH/".$RIGHT_PID."/abs_dir")
+      :let abs_dir = Read("/tmp/nav/".$RIGHT_PID."/abs_dir")
       :exe '!setAbsDir $LEFT_PID '.abs_dir
     else
-      ":let abs_dir = Read("$FILE_WARP_TMP_PATH/".$LEFT_PID."/abs_dir")
+      ":let abs_dir = Read("/tmp/nav/".$LEFT_PID."/abs_dir")
     endif
-    :silent !touch $FILE_WARP_TMP_PATH/$LEFT_PID/kill
+    :silent !touch /tmp/nav/$LEFT_PID/kill
     :q!
     :q!
   endif
@@ -125,7 +125,7 @@ function MenuOld(on_exit,items)
     endif
     :let i += 1
   endfor
-  :call FloatCmd("echo $(trimWhitespace $(echo $str | fzf)) > /tmp/selection", {'w':0.5,'h':0.5,'on_exit': a:on_exit})
+  :call FloatCmd("echo $(echo -e $str | fzf) | xargs > /tmp/selection", {'w':0.5,'h':0.5,'on_exit': a:on_exit})
   ":call FloatCmd('export selection=$(trimWhitespace $(echo -e $str | fzf)) && servername=/tmp/vim$MYPID sendCommandToVim "call WriteFileType(\"$selection\")"', {'w':0.5,'h':0.5})
 endfunction
 
@@ -417,9 +417,9 @@ endfunction
 function TailConsole()
   :set laststatus=0
   :set noshowmode
-  :silent exe '!touch $FILE_WARP_TMP_PATH/$MYPID/console'
-  ":return "tail -f $FILE_WARP_TMP_PATH/$MYPID/console"
-  :return "watch -n .5 cat $FILE_WARP_TMP_PATH//$MYPID/console"
+  :silent exe '!touch /tmp/nav/$MYPID/console'
+  ":return "tail -f /tmp/nav/$MYPID/console"
+  :return "watch -n .5 cat /tmp/nav/$MYPID/console"
 endfunction
 
 function ToggleConsole()
