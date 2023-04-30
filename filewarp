@@ -16,7 +16,10 @@ navdown2 "$start" "$mode"
 
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
 name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
+<<<<<<< HEAD
 abs_path="$abs_dir/$name"
+=======
+>>>>>>> 54eb861 (use FILE_WARP_TMP_PATH env var)
 
 if [[ $from_ide == 0 ]];then
   if [[ $TERM == "xterm-kitty" ]];then
