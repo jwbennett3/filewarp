@@ -4,11 +4,11 @@ id="$1"
 view=`getView "$id"`
 
 if [[ $view == "listView" ]]; then
-  #echo "normalView" > /tmp/nav/view
-  #echo "alpha" > /tmp/nav/sort_by
+  #echo "normalView" > $FILE_WARP_TMP_PATH/view
+  #echo "alpha" > $FILE_WARP_TMP_PATH/sort_by
   setView "$id" "normalView"
   setSortBy "$id" "alpha"
 elif [[ $view == "normalView" ]]; then
-  #echo "listView" > /tmp/nav/view
+  #echo "listView" > $FILE_WARP_TMP_PATH/view
   setView "$id" "listView"
 fi

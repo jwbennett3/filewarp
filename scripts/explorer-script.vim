@@ -18,7 +18,7 @@ function FQuitNav()
   ":call feedkeys("\<C-w>h","n")
   ":silent !echo "" > /tmp/output
   if ! $GVIM
-    :silent !touch /tmp/nav/$LEFT_PID/killf
+    :silent !touch $FILE_WARP_TMP_PATH//$LEFT_PID/killf
     :q!
     :q!
   endif
@@ -27,12 +27,12 @@ endfunction
 function QuitNav()
   if ! $GVIM
     if $panel == 'right'
-      :let abs_dir = Read("/tmp/nav/".$RIGHT_PID."/abs_dir")
+      :let abs_dir = Read("$FILE_WARP_TMP_PATH/".$RIGHT_PID."/abs_dir")
       :exe '!setAbsDir $LEFT_PID '.abs_dir
     else
-      ":let abs_dir = Read("/tmp/nav/".$LEFT_PID."/abs_dir")
+      ":let abs_dir = Read("$FILE_WARP_TMP_PATH/".$LEFT_PID."/abs_dir")
     endif
-    :silent !touch /tmp/nav/$LEFT_PID/kill
+    :silent !touch $FILE_WARP_TMP_PATH/$LEFT_PID/kill
     :q!
     :q!
   endif
@@ -417,9 +417,9 @@ endfunction
 function TailConsole()
   :set laststatus=0
   :set noshowmode
-  :silent exe '!touch /tmp/nav/$MYPID/console'
-  ":return "tail -f /tmp/nav/$MYPID/console"
-  :return "watch -n .5 cat /tmp/nav/$MYPID/console"
+  :silent exe '!touch $FILE_WARP_TMP_PATH/$MYPID/console'
+  ":return "tail -f $FILE_WARP_TMP_PATH/$MYPID/console"
+  :return "watch -n .5 cat $FILE_WARP_TMP_PATH//$MYPID/console"
 endfunction
 
 function ToggleConsole()

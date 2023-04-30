@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 id="$1"
-mkdir -p /tmp/nav/$id
+mkdir -p $FILE_WARP_TMP_PATH/$id
 name=`getArg $id "$2"`
-echo "$(trimWhitespace $name)" > /tmp/nav/$id/name
+echo "$(trimWhitespace $name)" > $FILE_WARP_TMP_PATH/$id/name
 
 

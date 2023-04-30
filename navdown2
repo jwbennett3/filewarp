@@ -56,10 +56,10 @@ NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" nvim0.6.1 -u /usr/bin/nav-enter.vim -c "call
 #fi
 
 
-#if [[ -e /tmp/nav/$MYPID/killf ]]; then
-  #rm -f /tmp/nav/$MYPID/killc
-#elif [[ -e /tmp/nav/$MYPID/kill ]]; then
-  #rm -f /tmp/nav/$MYPID/kill
+#if [[ -e $FILE_WARP_TMP_PATH/$MYPID/killf ]]; then
+  #rm -f $FILE_WARP_TMP_PATH/$MYPID/killc
+#elif [[ -e $FILE_WARP_TMP_PATH/$MYPID/kill ]]; then
+  #rm -f $FILE_WARP_TMP_PATH/$MYPID/kill
   #if [[ ! -z "$directory" ]]; then
     #owner=$(stat -c '%U' "$directory")
     #group=$(stat -c '%G' "$directory")
@@ -67,8 +67,8 @@ NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" nvim0.6.1 -u /usr/bin/nav-enter.vim -c "call
     #command cd "$directory"
     #sudo chown $owner:$group $directory
   #fi
-  #if [[ -e /tmp/nav/$MYPID/list_on_exit ]]; then
-    #rm -f /tmp/nav/$MYPID/list_on_exit
+  #if [[ -e $FILE_WARP_TMP_PATH/$MYPID/list_on_exit ]]; then
+    #rm -f $FILE_WARP_TMP_PATH/$MYPID/list_on_exit
     #list2 .
   #fi
 #else

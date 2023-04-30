@@ -13,8 +13,8 @@ fi
 navdown2 "$start" "normal"
 
 
-abs_dir="$(cat "/tmp/nav/$id/abs_dir")"
-name="$(cat "/tmp/nav/$id/name")"
+abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
+name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
 
 if [[ $from_ide == 0 ]];then
   if [[ $TERM == "xterm-kitty" ]];then

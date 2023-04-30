@@ -1,11 +1,11 @@
 #!/bin/bash
 
-let curr_row=`cat /tmp/nav/row`
+let curr_row=`cat $FILE_WARP_TMP_PATH/row`
 if [[ ! $curr_row -eq 0 ]];then
   ((curr_row--))
   listing="\n $(ls $abs_dir)"
   listing_arr=($listing)
-  echo ${listing_arr[$curr_row]} > /tmp/nav/cursor_at
-  echo $curr_row > /tmp/nav/row
+  echo ${listing_arr[$curr_row]} > $FILE_WARP_TMP_PATH/cursor_at
+  echo $curr_row > $FILE_WARP_TMP_PATH/row
 fi
 

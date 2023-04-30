@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 id="$1"
-mkdir -p /tmp/nav/$id
-echo "$2" > /tmp/nav/$id/abs_dir
+mkdir -p $FILE_WARP_TMP_PATH/$id
+echo "$2" > $FILE_WARP_TMP_PATH/$id/abs_dir
 
 

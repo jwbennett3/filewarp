@@ -2,8 +2,8 @@
 
 id="$1"
 
-if [[ -e /tmp/nav/$id/abs_dir ]];then
-  cat /tmp/nav/$id/abs_dir
+if [[ -e $FILE_WARP_TMP_PATH/$id/abs_dir ]];then
+  cat $FILE_WARP_TMP_PATH/$id/abs_dir
 else
   echo ""
 fi

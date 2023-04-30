@@ -2,8 +2,8 @@
 
 id="$1"
 
-if [[ -e /tmp/nav/$id/view ]];then
-  cat /tmp/nav/$id/view
+if [[ -e $FILE_WARP_TMP_PATH/$id/view ]];then
+  cat $FILE_WARP_TMP_PATH/$id/view
 else
   echo "normalView"
 fi

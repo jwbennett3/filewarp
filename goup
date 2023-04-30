@@ -10,11 +10,10 @@ on_up=`getOnUp "$id"`
 if [ ! -z "$on_up" ]; then
   eval "$on_up $parent"
 fi
-echo "$parent/" > /tmp/nav/path
+echo "$parent/" > $FILE_WARP_TMP_PATH/path
 #export abs_dir="$parent"
 setAbsDir "$id" "$parent"
-#echo "$parent" > /tmp/nav/abs_dir
+#echo "$parent" > $FILE_WARP_TMP_PATHabs_dir
 
 #. navdown "$parent" "$on_enter" "$on_up" "$on_open" "$alt_open"
 #reload "$parent"
-

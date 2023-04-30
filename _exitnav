@@ -9,19 +9,19 @@ path="$abs_dir/$name"
 #echo "$path" > /tmp/deb
 
 if [[ -z "$name" || "$name" == "total" ]];then
-  echo "" > /tmp/nav/$id/kill
-  echo "" > /tmp/nav/$id/list_on_exit
+  echo "" > $FILE_WARP_TMP_PATH/$id/kill
+  echo "" > $FILE_WARP_TMP_PATH/$id/list_on_exit
 
   #TODO should move on_exit hook to navdown(2)
   #eval "$on_exit $abs_dir"
 #elif [[ "$mode" == "normal" ]]; then
 elif [[ -d "$path" ]]; then
-  echo "" > /tmp/nav/$id/kill
+  echo "" > $FILE_WARP_TMP_PATH/$id/kill
     #setQueryStr "$id" ""
   setAbsDir "$id" "$path"
   #eval "$on_exit $path"
 elif [[ -f "$path" ]]; then
   eval "$on_exit $path"
-  #echo "" > /tmp/nav/$id/kill
+  #echo "" > $FILE_WARP_TMP_PATH/$id/kill
 fi
 

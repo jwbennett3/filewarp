@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
 id="$1"
-if [[ -e /tmp/nav/$id/on_exit ]];then
-  cat /tmp/nav/$id/on_exit
+if [[ -e $FILE_WARP_TMP_PATH/$id/on_exit ]];then
+  cat $FILE_WARP_TMP_PATH/$id/on_exit
 else
   echo ""
 fi
