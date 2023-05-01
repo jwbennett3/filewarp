@@ -141,7 +141,7 @@ function! SetNormalMode()
   if $num_panes != 2
     :tnoremap <C-A-e> <A-u><C-\><C-n>:call RecentDirsThenNavSplit()<CR>
   endif
-  :tnoremap <C-e> <C-\><C-n>:call RecentDirsThenNav()<CR>
+  ":tnoremap <C-e> <C-\><C-n>:call RecentDirsThenNav()<CR>
   :tnoremap <C-A-o> <C-\><C-n>:call SplitChild()<CR>
   :tnoremap <Space> <C-\><C-n>:set noinsertmode<CR>:call SetInsertMode()<CR>:set insertmode<CR><f11>
   :tnoremap <C-Space> <C-\><C-n>:set noinsertmode<CR>:call SetNormalMode()<CR>:set insertmode<CR><f10>
