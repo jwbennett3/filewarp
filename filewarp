@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
 start="$1"
-from_ide=${2:-0}
+mode=${2:-normal}
+from_ide=${3:-0}
 
 if [[ $from_ide == 1 ]];then
   export id=0
@@ -10,7 +11,7 @@ else
 fi
 
 mkdir -p "$FILE_WARP_TMP_PATH"
-navdown2 "$start" "normal"
+navdown2 "$start" "$mode"
 
 
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
@@ -20,14 +21,24 @@ if [[ $from_ide == 0 ]];then
   if [[ $TERM == "xterm-kitty" ]];then
     if [[ -f "$abs_dir/$name" ]];then
       openFileForEditing server$INDEX "$abs_dir/$name" &
+      if [[ "$mode" == normal ]];then
+        cd "$abs_dir"
+      fi
     else
-      cd "$abs_dir"
+      if [[ "$mode" == normal ]];then
+        cd "$abs_dir"
+      fi
     fi
   else
     if [[ -f "$abs_dir/$name" ]];then
-      nvim "$abs_dir/$name"
+      editText "$abs_dir/$name"
+      if [[ "$mode" == normal ]];then
+        cd "$abs_dir"
+      fi
     else
-      cd "$abs_dir"
+      if [[ "$mode" == normal ]];then
+        cd "$abs_dir"
+      fi
     fi
   fi
 fi
