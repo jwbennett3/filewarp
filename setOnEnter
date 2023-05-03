@@ -2,6 +2,6 @@
 
 id="$1"
 mkdir -p $FILE_WARP_TMP_PATH/$id
-echo "$2" > $FILE_WARP_TMP_PATH/$id/on_enter 
+echo "$2" > $FILE_WARP_TMP_PATH/$id/on_enter
 
 

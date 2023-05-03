@@ -38,7 +38,7 @@ function! ProjTreeFromTerminal(curr_dir,mode)
   :let $curr_dir = a:curr_dir
   :let $mode = a:mode
   :sil exe "!setAbsDir $MYPID $curr_dir"
-  :let $cmd_str = "on_enter='. changeDirectory' on_up='. navupr' on_open='' getList $MYPID | on_exit='$on_exit_nav' fzfnav2 '$MYPID' '$curr_dir' '$mode'"
+  :let $cmd_str = "on_enter='. changeDirectory' on_up='. navupr' on_open='' getList $MYPID | on_exit='$on_exit_nav' . fzfnav2 '$MYPID' '$curr_dir' '$mode'"
   :let $on_exit = 'Quit'
   :let options = "{'on_exit':'Quit'}"
   :set statusline=$curr_dir

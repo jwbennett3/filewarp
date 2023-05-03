@@ -1,12 +1,13 @@
 #!/bin/bash -e
+
 id="$1"
 dir="$2"
 mode="$3"
 hide_preview="$4"
-
 #header_str="$3"
 #search_by="$4"
 #query_str="$5"
+
 if [[ -z "$mode" ]];then
   mode="$6"
 fi
