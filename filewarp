@@ -16,11 +16,16 @@ navdown2 "$start" "$mode"
 
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
 name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
+abs_path="$abs_dir/$name"
 
 if [[ $from_ide == 0 ]];then
   if [[ $TERM == "xterm-kitty" ]];then
-    if [[ -f "$abs_dir/$name" ]];then
-      openFileForEditing server$INDEX "$abs_dir/$name" &
+    if [[ -f "$abs_path" ]];then
+      if [[ $(file -b --mime-type workspaceFromTerminal) == "text"* ]];then
+        openFileForEditing server$INDEX "$abs_path" &
+      else
+        open "$abs_path"
+      fi
       if [[ "$mode" == normal ]];then
         cd "$abs_dir"
       fi
@@ -31,7 +36,7 @@ if [[ $from_ide == 0 ]];then
     fi
   else
     if [[ -f "$abs_dir/$name" ]];then
-      editText "$abs_dir/$name"
+      open "$abs_path"
       if [[ "$mode" == normal ]];then
         cd "$abs_dir"
       fi
