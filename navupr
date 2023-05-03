@@ -4,5 +4,5 @@
 command cd ..
 
 my_pid=${my_pid:--1}
-addRecentDirectory "$(pwd)" "$my_pid" true > /dev/null 2>&1
+addRecentDirectory "$(pwd)" "$my_pid" true > "$HOME/null" 2>&1
 

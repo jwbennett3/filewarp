@@ -29,7 +29,7 @@ if [[ $status == "go" ]];then
 #else
   #sum=$(md5sum "$src")
   orig_size=$(sudo du "$src" | awk '{print $1}')
-  #/usr/bin/cp -r "$src" "$dest" & > /dev/null 2>&1
+  #/usr/bin/cp -r "$src" "$dest" & > $HOME/null 2>&1
   sudo /usr/bin/cp -r --preserve=mode,ownership "$src" "$dest" &
   pid=$!
   #get rid of job done message

@@ -145,7 +145,7 @@ set_prompt_to_insert="f11"
   #wait=.1
   #while [[ -e "$trash/$arg" ]];do
     #clear
-    #echo deleting $arg $(du -sh "$path" 2> /dev/null | awk '{print $1}')
+    #echo deleting $arg $(du -sh "$path" 2> $HOME/null | awk '{print $1}')
     #if [[ -e "$path" ]];then
       #sleep $wait
     #fi
