@@ -11,7 +11,7 @@ fi
 mkdir -p "$FILE_WARP_TMP_PATH/$id"
 touch "$FILE_WARP_TMP_PATH/$id/abs_dir"
 touch "$FILE_WARP_TMP_PATH/$id/name"
-navdown2 "$start" "$mode"
+. navdown2 "$start" "$mode"
 
 
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
