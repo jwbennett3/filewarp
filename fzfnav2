@@ -119,6 +119,8 @@ newfile="ctrl-k"
 newfiletype="f12"
 quicksearch="f12"
 getpath="alt-c"
+getdir="alt-a"
+getfile="alt-r"
 bak="alt-b"
 unbakf="ctrl-alt-b"
 bakf="ctrl-b"
@@ -225,6 +227,8 @@ $opts \
 --bind="$jump:jump" \
 --bind="$watchdir:execute(echo watchdir $MYPID)+accept" \
 --bind="$getpath:execute-silent(getPath $id {})+reload(getList $id)" \
+--bind="$getdir:execute-silent(cpDirPath $id {})+reload(getList $id)" \
+--bind="$getfile:execute-silent(cpFileName $id {})+reload(getList $id)" \
 --bind="$bak:execute-silent(bak $id {})+reload(getList $id)" \
 --bind="$bakf:execute-silent(bakf $id {})+reload(getList $id)" \
 --bind="$unbakf:execute-silent(unbakf $id {})+reload(getList $id)" \

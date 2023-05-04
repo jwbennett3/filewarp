@@ -137,6 +137,8 @@ function! SetNormalMode()
   :nnoremap 14 <A-u>
 
   :tnoremap <A-S-c> <A-c>
+  :tnoremap <C-A-d> <A-a>
+  :tnoremap ç <A-r>
   :tnoremap <C-A-n> <C-\><C-n>:call SplitParent()<CR>
   if $num_panes != 2
     :tnoremap <C-A-e> <A-u><C-\><C-n>:call RecentDirsThenNavSplit()<CR>
@@ -260,7 +262,7 @@ function! SetNormalMode()
   :tnoremap ł d
   :tnoremap æ z
   :tnoremap đ x
-  :tnoremap ç c
+  ":tnoremap ç c
   :tnoremap œ v
   :tnoremap ħ b
 endfunction

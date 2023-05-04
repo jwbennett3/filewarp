@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+id="$1"
+
+abs_dir=$(getAbsDir "$id")
+
+printf "$abs_dir" | xsel --clipboard
+

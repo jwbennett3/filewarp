@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+id="$1"
+
+arg="$(getArg "$id" "$2")"
+
+printf "$arg" | xsel --clipboard
+
