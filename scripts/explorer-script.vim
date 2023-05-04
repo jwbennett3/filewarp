@@ -274,7 +274,6 @@ function ChangePerms()
   :call BackToNormalAndRefresh()
 endfunction
 
-
 function RecentDirsThenNavSplit()
 ":set eventignore=TermClose
   :call SetInsertMode()
@@ -287,7 +286,6 @@ function RecentDirsThenNav()
   ":call FloatCmd('. recentDirs "setAbsDir 1 " "" "0"', {"on_exit":"ChangeDir","w":0.9,"h":0.9})
   :call FloatCmd('. recentDirs "" "" "0"', {"on_exit":"ChangeDir","w":0.9,"h":0.9})
 endfunction
-
 
 function MvTransfer()
 :silent !mvtransfer $panel
@@ -326,7 +324,6 @@ function CpTransfer()
   ":startinsert
   ":exe 'norm! \<C-w>l:silent !xdotool key F6\<CR>:startinsert\<CR>'
 endfunction
-
 "=============================================================== splits
 function SplitRight()
   ":set eventignore=
@@ -467,39 +464,6 @@ function OpenConsole()
     :exe "norm! i"
   endif
 endfunction
-
-
-
-"function ProjTree4()
-  ":let $panel='left'
-""  :let $MYPID = 1
-  ":call HideVimMode()
-  ":call SetNormalMode()
-  ":let curr_dir = GetCurrDir()
-  ":exe 'cd '.GetCurrDir()
-  ":if $left_dir != ""
-    ":let curr_dir = $left_dir
-  "endif
-  ":let cmd_str = ". navDownFromIde '".curr_dir."' 'true'"
-  "return cmd_str
-"endfunction
-
-
-"function ProjTreeNew()
-  ":let $MYPID = 0
-  ":call HideVimMode()
-  ":let $panel='left'
-  ":let $LEFT_PID=$MYPID
-  ":let $curr_dir = GetCurrDir()
-  ":let $mode = "normal"
-
-  ""TODO probably should delete this
-  ":mapclear! <buffer>
-  "":let cmd_str='id=0 on_exit_nav="openFileForEditing " nvim -u $NVIMHOME/nav-enter.vim -c "call ProjTreeFromTerminal(\"'.$curr_dir.'\",\"normal\")"'
-    ":let cmd_str='id=0 on_exit_nav="openFileForEditing server$INDEX " nvim -u $NVIMHOME/nav-enter.vim -c "call ProjTreeFromTerminal(\"'.$curr_dir.'\",\"normal\")"'"
-  ":call FloatCmd(cmd_str)
-"endfunction
-
 
 
 
