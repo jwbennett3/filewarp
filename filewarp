@@ -6,7 +6,8 @@ from_ide=${3:-0}
 if [[ $from_ide == 1 ]];then
   export id=0
 else
-  export id=$PPID
+  #export id=$PPID
+  export id=$$
 fi
 mkdir -p "$FILE_WARP_TMP_PATH/$id"
 touch "$FILE_WARP_TMP_PATH/$id/abs_dir"
