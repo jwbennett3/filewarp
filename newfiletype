@@ -22,12 +22,11 @@ type="$1"
 #type=$(trimWhitespace $type)
 
 read -e -p "new $type:" filename
-echo $filename >> /tmp/deb
-path="`getAbsDir $MYPID`/$filename"
-echo $type >> /tmp/deb
+abs_dir=`getAbsDir "$MYPID"`
+path="$abs_dir/$filename"
 
 if [[ -e "$path" ]];then
-  echo $path already exists, f to force, any other key to abort
+  echo "$path already exists, f to force, any other key to abort"
   read -p '' status
   if [[ "$status" != "f" ]]; then
     exit 0
@@ -37,11 +36,8 @@ fi
 
 case $type in
 bash)
-  echo a >> /tmp/deb
   echo '#!/bin/bash -e' > $path
-  echo b >> /tmp/deb
   sudo chmod +x $path
-  echo c >> /tmp/deb
 ;;
 python)
   echo '#!/usr/bin/env python' > $path
@@ -75,9 +71,10 @@ echo $class_path
 ;;
 esac
 
-#eval "$on_open_in $path"
-#addRecentFile "$path" "$$"
-#echo "$path" > /tmp/output
+if [[ -n "$(which getProjRootPath)" ]];then
+  root="$(getProjRootPath "$abs_dir")/.git"
+  git --git-dir "$root" add "$filename"
+fi
 
 
 

@@ -1,5 +1,4 @@
 #!/bin/bash -e
-
 abs_dir=`getAbsDir "$MYPID"`
 
 read -e -p 'new file:' filename
@@ -7,6 +6,10 @@ path="$abs_dir/$filename"
 touch "$path"
 echo "$path" > /tmp/output
 
+if [[ -n "$(which getProjRootPath)" ]];then
+  root="$(getProjRootPath "$abs_dir")/.git"
+  git --git-dir "$root" add "$filename"
+fi
 #on_open=`getOnOpen "$id"`
 #eval "$on_open $path"
 
