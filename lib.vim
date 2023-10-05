@@ -1,4 +1,3 @@
-
 function! SourceAll(path)
   for f in split(glob(a:path), '\n')
     if !isdirectory(f)
