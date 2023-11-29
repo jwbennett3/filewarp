@@ -50,7 +50,6 @@ if [[ $from_ide == 0 ]];then
 else
   if [[ -f "$abs_dir/$name" ]];then
     openFileForEditing "server$called_from_index" "$abs_dir/$name" normal
-  else
-    focusActiveEditor
   fi
+  focusActiveEditor
 fi
