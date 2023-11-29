@@ -15,7 +15,6 @@ touch "$FILE_WARP_TMP_PATH/$id/abs_dir"
 touch "$FILE_WARP_TMP_PATH/$id/name"
 . navdown2 "$start" "$mode"
 
-
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
 name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
 abs_path="$abs_dir/$name"
@@ -49,5 +48,9 @@ if [[ $from_ide == 0 ]];then
     fi
   fi
 else
-  openFileForEditing "server$called_from_index" "$abs_dir/$name" normal
+  if [[ -f "$abs_dir/$name" ]];then
+    openFileForEditing "server$called_from_index" "$abs_dir/$name" normal
+  else
+    focusActiveEditor
+  fi
 fi
