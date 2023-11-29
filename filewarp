@@ -3,6 +3,7 @@
 start="$1"
 mode=${2:-normal}
 from_ide=${3:-0}
+called_from_index="$4"
 if [[ $from_ide == 1 ]];then
   export id=0
 else
@@ -47,4 +48,6 @@ if [[ $from_ide == 0 ]];then
       fi
     fi
   fi
+else
+  openFileForEditing "server$called_from_index" "$abs_dir/$name" normal
 fi
