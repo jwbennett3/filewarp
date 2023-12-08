@@ -195,7 +195,7 @@ function GotoImplementation()
   :let $col=getpos('.')[2]
   :let $file_path=GetFilePath()
   if called_from_path != $file_path
-    :silent exec "!openFileForEditing server$INDEX $file_path $line $col"
+    :silent exec "!openFileForEditing $INDEX $file_path $line $col"
     :bd!
   else
     :call SetCursor()

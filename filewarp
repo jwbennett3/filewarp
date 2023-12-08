@@ -23,7 +23,7 @@ if [[ $from_ide == 0 ]];then
   if [[ $TERM == "xterm-kitty" ]];then
     if [[ -f "$abs_path" ]];then
       if [[ $(file -b --mime-type workspaceFromTerminal) == "text"* ]];then
-        openFileForEditing server$INDEX "$abs_path" &
+        openFileForEditing $INDEX "$abs_path" &
       else
         open "$abs_path"
       fi
@@ -49,7 +49,7 @@ if [[ $from_ide == 0 ]];then
   fi
 else
   if [[ -f "$abs_dir/$name" ]];then
-    openFileForEditing "server$called_from_index" "$abs_dir/$name" normal
+    openFileForEditing "$called_from_index" "$abs_dir/$name" normal
   fi
   focusActiveEditor
 fi
