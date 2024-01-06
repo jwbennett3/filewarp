@@ -1,0 +1,15 @@
+#!/bin/bash -e
+ 
+ 
+in_reg="$1"
+out_reg="$2"
+#opts="${3:-"{}"}" 
+rm -f "$out_reg"
+mkdir -p "$out_reg"
+
+echo "record" > "$out_reg/.type"
+ 
+info "$out_reg"
+#echo 8 > "$out_reg"
+out_reg="$out_reg" filewarp "$(cat "$in_reg/dir_path")"
+ 

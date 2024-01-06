@@ -18,6 +18,10 @@ touch "$FILE_WARP_TMP_PATH/$id/name"
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
 name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
 abs_path="$abs_dir/$name"
+ 
+if [[ -n "$out_reg" ]];then
+  echo "$abs_dir" > "$out_reg/curr_dir"
+fi
 
 if [[ $from_ide == 0 ]];then
   if [[ $TERM == "xterm-kitty" ]];then
