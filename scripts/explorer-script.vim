@@ -255,7 +255,7 @@ endfunction
 
 function Rename()
   :call SetInsertMode()
-  :call FloatCmd("rename", {'w':0.5,'h':0.5,'on_exit':'BackToNormalAndRefresh'})
+  :call FloatCmd("filewarp-rename", {'w':0.5,'h':0.5,'on_exit':'BackToNormalAndRefresh'})
 endfunction
 
 function Counts()
