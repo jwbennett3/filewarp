@@ -1,13 +1,8 @@
 #!/bin/bash
 
 id="$1"
-if [[ $HOSTNAME == optimus && -z "$(ls /data)" ]];then
-  #ssh joe@conan 'mv "$path" "$trash/$arg"'
-  trash="/home/joe/trash"
-else
-  trash="/data/tmp/trash"
-fi
-#trash="/optimus/home/joe/trash"
+
+trash="/d/tmp/trash"
 mkdir -p $trash
 
 abs_dir=`getAbsDir "$id"`
