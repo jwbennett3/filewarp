@@ -175,6 +175,8 @@ function! SetNormalMode()
   :tnoremap <silent> g <C-\><C-n>:call ToggleConsole()<CR>
   :tnoremap j <Nop>
   :tnoremap l <C-\><C-n>:call CpTransfer()<CR>
+  :tnoremap dn <C-\><C-n>:call GotoRoot()<CR>
+  :tnoremap N <C-\><C-n>:call GotoProjRoot()<CR>
   :tnoremap u <Nop>
   :tnoremap y <Nop>
   "not working

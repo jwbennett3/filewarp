@@ -288,9 +288,6 @@ function! GetMachineName()
   :return Read('/tmp/hostname')
 endfunction
 
-function! GotoProjRoot()
-  :exe 'cd '.GetCurrDir()
-endfunction
 
 function! GetInput(prompt_message,default_value)
   :call inputsave()

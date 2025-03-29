@@ -163,6 +163,9 @@ function ChangeDir()
   :call BackToNormalAndRefresh()
 endfunction
 
+
+
+
 function SetCurrPanelToLeft()
   if $panel == 'left'
     :return
@@ -466,4 +469,22 @@ function OpenConsole()
 endfunction
 
 
+function GotoRoot()
+  :let pid = $LEFT_PID
+  :let dir = "/"
+  :silent exe '!`setAbsDir '.pid.' '.dir.'`'
+  :call UpdatePath()
+  :call BackToNormalAndRefresh()
+endfunction
 
+
+function GotoProjRoot()
+  :let pid = $LEFT_PID
+  :silent !echo $(getAbsDir $LEFT_PID) > /tmp/output
+  :let curr_dir = CleanFilePath(Read("/tmp/output"))
+  :silent exe '!getProjRootPath '.curr_dir.' > /tmp/output'
+  :let proj_root = CleanFilePath(Read("/tmp/output"))
+  :silent exe '!`setAbsDir '.pid.' '.proj_root.'`'
+  :call UpdatePath()
+  :call BackToNormalAndRefresh()
+endfunction
