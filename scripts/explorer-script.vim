@@ -268,7 +268,7 @@ endfunction
 "TODO Own
 function Perms()
   :let g:floaterm_title=system('echo `getName '.GetCurrPanelId().'`')
-  :call MenuOld("ChangePerms",["+x","-x","775","777"])
+  :call MenuOld("ChangePerms",["-w","+w","+x","-x","775","777"])
 endfunction
 
 function ChangePerms()
