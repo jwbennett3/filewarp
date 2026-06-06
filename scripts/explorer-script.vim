@@ -148,14 +148,20 @@ function UpdatePath(...)
     :exe "setlocal statusline=".path
 endfunction
 
+"this function's for if called upon externally with ipc
 function! SetDirectory(path)
-  let $curr_dir = a:path
-  call system('setAbsDir ' . $MYPID . ' ' . a:path)
-  call system('setAbsDir ' . $LEFT_PID . ' ' . a:path)
-  let l:dir_file = '/tmp/tmp/var/vim-com/filewarp/dir'
-  call mkdir(fnamemodify(l:dir_file, ':h'), 'p')
-  call writefile([a:path], l:dir_file)
-  :call UpdatePath(a:path)
+  if !exists('$panel')
+    :let $panel = 'left'
+  endif
+  :let dir = a:path
+  if $panel == 'left'
+    :let pid = $LEFT_PID
+  else
+    :let pid = $RIGHT_PID
+  endif
+
+  :silent exe '!`setAbsDir '.pid.' '.dir.'`'
+  :call UpdatePath()
   :call BackToNormalAndRefresh()
 endfunction
 
