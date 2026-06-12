@@ -79,7 +79,7 @@ function M.run(path: string, mode: string)
     end,
   })
 
-  explorer.float_cmd(cmd_str, {w = '1.0', h = '1.0'})
+  explorer.float_cmd(cmd_str, {w = 1.0, h = 1.0})
 end
 
 return M

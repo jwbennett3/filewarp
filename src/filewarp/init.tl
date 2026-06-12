@@ -101,7 +101,7 @@ function M.start_from_terminal(curr_dir: string, mode: string)
   local termspec = "call termopen('" .. cmd_str .. "',{'on_exit':'Quit'})"
   explorer.float_cmd(
     'nvim -u $NVIMHOME/nav.vim -c "' .. termspec .. '"',
-    {w = '1.0', h = '1.0'}
+    {w = 1.0, h = 1.0}
   )
 end
 

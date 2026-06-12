@@ -29,8 +29,7 @@ global record Binding
   rhs:string
 end
 
-global setTransient = function()
-end
+local float_term:Feature = require'float-term' as Feature
 
 return {
   start = function(opts:FilewarpOpts)
@@ -53,12 +52,13 @@ return {
 
     local app_opts = {
       priority_features = {
-        'mode_ctrl',
-        'colorscheme',
+	mode_ctrl = require'mode-ctrl' as Feature,
       },
       features = {
-        'nav',
-        'ccpd',
+        --'nav',
+        --'ccpd',
+
+        float_term = require'float-term' as Feature,
       },
       settings = {
         timeoutlen = 200,

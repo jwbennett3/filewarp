@@ -468,20 +468,26 @@ function M.goto_proj_root()
   vim.fn.feedkeys('\\<F6>', 't')
 end
 
+local on_exit_handlers: any = {
+  back_to_normal_and_refresh = function() M.back_to_normal_and_refresh() end,
+  back_to_normal = function() M.back_to_normal() end,
+  split_right = function() M.split_right() end,
+  change_dir = function() M.change_dir() end,
+}
+
 function M.float_cmd(cmd_str: string, opts: any)
   opts = opts or {}
-  local w = opts.w or '1.0'
-  local h = opts.h or '1.0'
-  local title = opts.title or ''
-  local on_exit = opts.on_exit or ''
-  vim.env.on_exit = on_exit
-
-  if title == '' then
-    vim.cmd('FloatermNew --width=' .. tostring(w) .. ' --height=' .. tostring(h) .. ' ' .. cmd_str)
-  else
-    vim.cmd('FloatermNew --title=' .. title .. ' --width=' .. tostring(w) ..
-      ' --height=' .. tostring(h) .. ' ' .. cmd_str)
+  local float_opts: any = {
+    w = opts.w or 0.5,
+    h = opts.h or 0.5,
+  }
+  if opts.on_exit and opts.on_exit ~= '' then
+    local handler = on_exit_handlers[opts.on_exit]
+    if handler then
+      float_opts.onDone = handler
+    end
   end
+  floatCmd(cmd_str, float_opts)
 end
 
 function M.hide_vim_mode()
