@@ -2,3 +2,4 @@
 /bin/nvim*
 /build*
 /env
+/lua-prod
