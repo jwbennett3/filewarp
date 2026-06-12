@@ -1,11 +1,40 @@
+--tl-ignore
 local explorer = require('filewarp.explorer')
 local modes = require('filewarp.modes')
 local lib = require('filewarp.lib')
 
-return {
-  start = function(opts)
-    opts = opts or {}
+global record FilewarpOpts
+  panel:string
+  num_panes:number
+  left_preview:number
+  right_preview:number
+  mypid:number
+  left_pid:number
+  right_pid:number
+  gvim:string
+  curr_dir:string
+  mode:string
+  context:string
+  on_exit:string
+end
 
+global record AutoCmd
+  event:string
+  callback:function
+end
+
+global record Binding
+  mode:string
+  lhs:string
+  rhs:string
+end
+
+global setTransient = function()
+end
+
+return {
+  start = function(opts:FilewarpOpts)
+    opts = opts or {}
     vim.env.panel = opts.panel or 'left'
     vim.env.num_panes = opts.num_panes or 1
     vim.env.left_preview = opts.left_preview or 0
@@ -92,7 +121,7 @@ return {
     vim.g.skip_post = 1
   end,
 
-  start_from_terminal = function(curr_dir, mode)
+  start_from_terminal = function(curr_dir:string, mode:string)
     mode = mode or 'normal'
     vim.cmd('enew')
     explorer.hide_vim_mode()
@@ -105,7 +134,8 @@ return {
     vim.fn.system('setAbsDir ' .. tostring(vim.env.MYPID) .. ' ' .. curr_dir)
 
     local cmd_str = "on_enter='. changeDirectory' on_up='. navupr' on_open='' " ..
-      "getList $MYPID | on_exit='$on_exit_nav' . fzfnav2 '$MYPID' '$curr_dir' '$mode'"
+      "getList " .. tostring(vim.env.MYPID) .. " | on_exit='$on_exit_nav' . fzfnav2 '" ..
+      tostring(vim.env.MYPID) .. "' '" .. curr_dir .. "' '" .. mode .. "'"
     vim.env.on_exit = 'Quit'
     vim.wo.statusline = curr_dir
 
