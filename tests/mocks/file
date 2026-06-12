@@ -1,0 +1,6 @@
+#!/bin/bash
+if [[ "$1" == "-b" && "$2" == "--mime-type" ]]; then
+  echo "$MOCK_MIME_TYPE"
+else
+  /usr/bin/file "$@"
+fi
