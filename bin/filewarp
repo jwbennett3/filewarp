@@ -1,0 +1,81 @@
+#!/bin/bash -e
+# filewarp — launch file navigator from the terminal
+#
+# Usage:
+#   filewarp [path] [mode] [from_ide] [called_from_index]
+#
+# Arguments:
+#   path              Starting directory (default: current dir)
+#   mode              normal|view|insert  (default: normal)
+#   from_ide          0|1  (default: 0)
+#   called_from_index Editor index when launched from IDE (default: "")
+#
+# Environment:
+#   FILE_WARP_TMP_PATH   State directory root
+#   out_reg              If set, writes selected dir to $out_reg/curr_dir
+#   INDEX                Editor index (used with from_ide=0, kitty terminal)
+
+this_dir="$(cd "$(dirname "$0")" && pwd)"
+export FILEWARP_HOME="$this_dir/.."
+export PATH="$FILEWARP_HOME/bin:$PATH"
+
+path="${1:-$(pwd)}"
+mode="${2:-normal}"
+from_ide="${3:-0}"
+called_from_index="${4:-}"
+
+# --- ID assignment ---
+if [[ "$from_ide" == 1 ]]; then
+  export id=0
+else
+  export id=$$
+fi
+
+# --- state directory ---
+mkdir -p "$FILE_WARP_TMP_PATH/$id"
+touch "$FILE_WARP_TMP_PATH/$id/abs_dir"
+touch "$FILE_WARP_TMP_PATH/$id/name"
+
+# --- navigate (launch nvim with Lua navdown2 entry point) ---
+#NVIM_HOME="${NVIM_HOME:-/inst/nvim-linux64-0.6.1}"
+NVIM_HOME="${NVIM_HOME:-/inst/nvim-linux64-0.11.4}"
+
+PATH=$NVIM_HOME/bin:$PATH \
+VIMRUNTIME=$NVIM_HOME/share/nvim/runtime \
+NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" \
+  nvim -i NONE \
+    -u "$FILEWARP_HOME/init.lua" \
+    -c "lua require('filewarp.navdown2').run('$path','$mode')"
+
+# --- read result ---
+abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
+name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
+abs_path="$abs_dir/$name"
+
+# --- output registration ---
+if [[ -n "$out_reg" ]]; then
+  echo "$abs_dir" > "$out_reg/curr_dir"
+fi
+
+# --- handle result ---
+if [[ "$from_ide" == 1 ]]; then
+  if [[ -f "$abs_path" ]]; then
+    openFileForEditing "$called_from_index" "$abs_path" normal
+  fi
+  focusActiveEditor
+  exit 0
+fi
+
+if [[ "$TERM" == "xterm-kitty" ]] && [[ -f "$abs_path" ]]; then
+  if [[ "$(file -b --mime-type "$abs_path")" == "text"* ]]; then
+    openFileForEditing $INDEX "$abs_path" &
+  else
+    open "$abs_path"
+  fi
+elif [[ -f "$abs_path" ]]; then
+  open "$abs_path"
+fi
+
+if [[ "$mode" == normal ]]; then
+  cd "$abs_dir"
+fi

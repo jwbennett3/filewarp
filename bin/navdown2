@@ -1,0 +1,20 @@
+#!/bin/bash -e
+# navdown2 — launch the file navigator (Lua entry point)
+#
+# Called by filewarp (or directly) to start the fzfnav2 pipeline
+# inside a floating nvim terminal via the filewarp Lua modules.
+
+set -o vi
+
+path="$1"
+mode="${2:-normal}"
+
+FILEWARP_HOME="$(cd "$(dirname "$0")/.." && pwd)"
+NVIM_HOME="${NVIM_HOME:-/inst/nvim-linux64-0.6.1}"
+
+PATH=$NVIM_HOME/bin:$PATH \
+VIMRUNTIME=$NVIM_HOME/share/nvim/runtime \
+NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" \
+  nvim -i NONE \
+    -u "$FILEWARP_HOME/init.lua" \
+    -c "lua require('filewarp.navdown2').run('$path','$mode')"
