@@ -1,0 +1,5 @@
+/plugins/*
+/bin/nvim*
+/build*
+/env
+/lua*

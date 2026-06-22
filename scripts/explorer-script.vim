@@ -148,6 +148,23 @@ function UpdatePath(...)
     :exe "setlocal statusline=".path
 endfunction
 
+"this function's for if called upon externally with ipc
+function! SetDirectory(path)
+  if !exists('$panel')
+    :let $panel = 'left'
+  endif
+  :let dir = a:path
+  if $panel == 'left'
+    :let pid = $LEFT_PID
+  else
+    :let pid = $RIGHT_PID
+  endif
+
+  :silent exe '!`setAbsDir '.pid.' '.dir.'`'
+  :call UpdatePath()
+  :call BackToNormalAndRefresh()
+endfunction
+
 function ChangeDir()
   if !exists('$panel')
     :let $panel = 'left'

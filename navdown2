@@ -47,6 +47,7 @@ export FZF_DEFAULT_OPTS="$FZF_VAR"
 export FZF_DEFAULT_COMMAND="rg --follow --glob '' 2> $HOME/null"
 
 #info $FILE_WARP_TMP_PATH
+unset BASH_XTRACEFD
 PATH=/inst/nvim-linux64-0.6.1/bin:$PATH VIMRUNTIME=/inst/nvim-linux64-0.6.1/share/nvim/runtime NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" nvim -i NONE -u /usr/bin/nav-enter.vim -c "let \$FILE_WARP_TMP_PATH='$FILE_WARP_TMP_PATH' | call ProjTreeFromTerminal('$path','$mode')"
 
 #directory=$(getAbsDir $MYPID)

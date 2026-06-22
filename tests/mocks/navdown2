@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "$id" > "$FILE_WARP_TMP_PATH/.test_id"
+echo "$MOCK_ABS_DIR" > "$FILE_WARP_TMP_PATH/$id/abs_dir"
+echo "$MOCK_NAME" > "$FILE_WARP_TMP_PATH/$id/name"
