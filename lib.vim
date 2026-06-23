@@ -365,15 +365,15 @@ function! SetDirectoryStatusLine(dir, win_id)
   hi default GitBranch ctermfg=cyan guifg=cyan
   hi default GitDirty ctermfg=red guifg=red
   hi default Path ctermfg=white guifg=white
-  let branch_name = system("getBranchName " . a:dir)
+  let branch_name = substitute(system("getBranchName " . a:dir), '\n', '', 'g')
   let stline = "%#Path#" . a:dir
   if branch_name != ""
-    let proj_root = system("getProjRootPath " . a:dir)
-    let stline = stline . "%#GitBranch#(" . branch_name . ")"
-    let status = system("cd " . proj_root . ";git status --porcelain")
-    if status != ""
-      let stline = stline . "%#GitDirty#*"
+    let num_diffs = substitute(system("gitNumDiffs " . a:dir), '\n', '', 'g')
+    let stline = stline . "%#GitBranch#(" . branch_name
+    if num_diffs != "" && num_diffs != 0
+      let stline = stline . "%#GitDirty# " . num_diffs
     endif
+    let stline = stline . ")"
   endif
   call setwinvar(a:win_id, '&statusline', stline)
 endfunction
