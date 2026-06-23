@@ -362,7 +362,7 @@ function! HostName()
 endfunction
 
 function! SetDirectoryStatusLine(dir, win_id)
-  hi default GitBranch ctermfg=cyan guifg=cyan
+  hi default GitBranch ctermfg=white guifg=white
   hi default GitDirty ctermfg=cyan guifg=cyan
   hi default Path ctermfg=white guifg=white
   let branch_name = substitute(system("getBranchName " . a:dir), '\n', '', 'g')

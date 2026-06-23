@@ -6,7 +6,35 @@ sort_by=`getSortBy "$1"`
 abs_dir=`getAbsDir "$1"`
 
 if [[ "$view" == "normalView" ]]; then
-  list2 "$abs_dir" | awk '{print $10, $11, $12}'
+  declare -A git_info
+  while IFS= read -r -d '' git_dir; do
+    dir_path="${git_dir%/.git}"
+    base="$(basename "$dir_path")"
+    branch=$(getBranchName "$dir_path" 2>/dev/null | tr -d '\n')
+    if [[ -n "$branch" ]]; then
+      diffs=$(gitNumDiffs "$dir_path" 2>/dev/null | tr -d '\n')
+      if [[ -n "$diffs" && "$diffs" != "0" ]]; then
+        git_info["$base"]="$branch $diffs"
+      else
+        git_info["$base"]="$branch"
+      fi
+    fi
+  done < <(find "$abs_dir" -maxdepth 1 -type d -name '.git' -print0 2>/dev/null)
+
+  shopt -s extglob
+  list2 "$abs_dir" | awk '{print $10, $11, $12}' | while IFS= read -r entry; do
+    clean="${entry//$'\e'\[*([0-9;])m}"
+    if [[ "$clean" == */ ]]; then
+      base="${clean%/}"
+      if [[ -v git_info["$base"] ]]; then
+        echo "$entry ${git_info["$base"]}"
+      else
+        echo "$entry"
+      fi
+    else
+      echo "$entry"
+    fi
+  done
 else
   if [[ "$view" == "duView" ]]; then
  ####sudo sh -c 'cd "$abs_dir"'
@@ -24,4 +52,3 @@ else
   list2 "$abs_dir" "time" | awk '{print $5, $6, $7, "  " $10, $11, $12}'
 fi
 fi
-
