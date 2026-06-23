@@ -136,16 +136,16 @@ endfunction
 "=============================================================== navigation
 function UpdatePath(...)
     if $panel == 'left'
-      :let path=system("echo `getAbsDir $LEFT_PID`")
+      :let path=system("echo -n `getAbsDir $LEFT_PID`")
     else
-      :let path=system("echo `getAbsDir $RIGHT_PID`")
+      :let path=system("echo -n `getAbsDir $RIGHT_PID`")
     endif
     :let max_chars =  winwidth('%')-3
     if len(string(path)) > max_chars
       :let path = "...".path[len(path)-max_chars:len(path)]
     endif
     let path = substitute(path, "/host" , "", "g")
-    :exe "setlocal statusline=".path
+    call SetDirectoryStatusLine(path, win_getid())
 endfunction
 
 function ChangeDir()

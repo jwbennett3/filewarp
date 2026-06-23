@@ -361,6 +361,23 @@ function! HostName()
   return system("echo -n $HOSTNAME")
 endfunction
 
+function! SetDirectoryStatusLine(dir, win_id)
+  hi default GitBranch ctermfg=cyan guifg=cyan
+  hi default GitDirty ctermfg=red guifg=red
+  hi default Path ctermfg=white guifg=white
+  let branch_name = system("getBranchName " . a:dir)
+  let stline = "%#Path#" . a:dir
+  if branch_name != ""
+    let proj_root = system("getProjRootPath " . a:dir)
+    let stline = stline . "%#GitBranch#(" . branch_name . ")"
+    let status = system("cd " . proj_root . ";git status --porcelain")
+    if status != ""
+      let stline = stline . "%#GitDirty#*"
+    endif
+  endif
+  call setwinvar(a:win_id, '&statusline', stline)
+endfunction
+
 "useful. not being used anywhere
 "function! ReturnHighlightTerm(group, term)
    "let output = execute('hi ' . a:group)
