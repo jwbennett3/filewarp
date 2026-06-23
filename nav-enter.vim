@@ -45,10 +45,13 @@ function! ProjTreeFromTerminal(curr_dir,mode)
   :call FloatCmd('nvim -u $NVIMHOME/nav.vim -c "call termopen(\"'.$cmd_str.'\",'.options.')"')
 endfunction
 
-
 source $NVIMHOME/scripts/explorer-script.vim
 source $NVIMHOME/scripts/terminal-lib.vim
 source $NVIMHOME/scripts/persistence.vim
+
+if trim(system('id -u')) != '0'
+  hi FloatermBorder guibg=#E12672 guifg=#E12672
+endif 
 
 
 augroup nav2
