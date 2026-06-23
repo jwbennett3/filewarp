@@ -3,5 +3,10 @@
 id="$1"
 dir=$(getAbsDir "$id")
 
-echo "$dir" > "$FILE_WARP_TMP_PATH/$id/restart_as_root"
+if [[ $EUID == 0 ]]; then
+  echo "$dir" > "$FILE_WARP_TMP_PATH/$id/restart_as_normal"
+  echo "${original_user:-${SUDO_USER:-root}}" > "$FILE_WARP_TMP_PATH/$id/restart_as_normal_user"
+else
+  echo "$dir" > "$FILE_WARP_TMP_PATH/$id/restart_as_root"
+fi
 touch "$FILE_WARP_TMP_PATH/$id/killf"
