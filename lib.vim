@@ -363,17 +363,17 @@ endfunction
 
 function! SetDirectoryStatusLine(dir, win_id)
   hi default GitBranch ctermfg=cyan guifg=cyan
-  hi default GitDirty ctermfg=red guifg=red
+  hi default GitDirty ctermfg=cyan guifg=cyan
   hi default Path ctermfg=white guifg=white
   let branch_name = substitute(system("getBranchName " . a:dir), '\n', '', 'g')
   let stline = "%#Path#" . a:dir
   if branch_name != ""
     let num_diffs = substitute(system("gitNumDiffs " . a:dir), '\n', '', 'g')
-    let stline = stline . "%#GitBranch#(" . branch_name
     if num_diffs != "" && num_diffs != 0
-      let stline = stline . "%#GitDirty# " . num_diffs
+      let stline = stline . "%#GitDirty#(" . branch_name . " " . num_diffs . ")"
+    else
+      let stline = stline . "%#GitBranch#(" . branch_name . ")"
     endif
-    let stline = stline . ")"
   endif
   call setwinvar(a:win_id, '&statusline', stline)
 endfunction
