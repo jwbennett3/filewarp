@@ -100,10 +100,12 @@ page_up="alt-i"
 page_down="alt-e"
 goto_bottom="ctrl-alt-e"
 goto_top="ctrl-alt-i"
+#conflicting with restartasroot
 preview_up="ctrl-s"
 preview_down="ctrl-r"
 preview_page_up="ctrl-alt-s"
 preview_page_down="ctrl-alt-r"
+restartasroot="ctrl-s"
 toggle="I"
 toggle_up="f12"
 toggle_down="f12"
@@ -213,6 +215,7 @@ $opts \
 --bind="$preview_up:preview-up" \
 --bind="$preview_down:preview-down" \
 --bind="$preview_page_up:preview-half-page-up" \
+--bind="$restartasroot:execute-silent(restartasroot $MYPID {})+abort" \
 --bind="$preview_page_down:preview-half-page-down" \
 --bind="$toggle:toggle" \
 --bind="$toggle_up:toggle+up" \

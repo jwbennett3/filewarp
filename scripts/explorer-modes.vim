@@ -181,10 +181,10 @@ function! SetNormalMode()
   :tnoremap y <Nop>
   "not working
   :tnoremap a <C-\><C-N>:set noinsertmode<CR><C-w>l<C-n><CR>:set insertmode<CR>
-  :tnoremap r <C-R>
+  :tnoremap r <A-S-r>
   ":tnoremap R <C-A-R>
   :tnoremap Þ <C-A-R>
-  :tnoremap s <C-s>
+  :tnoremap s <A-S-s>
   ":tnoremap S <C-A-s>
   :tnoremap “ <C-A-s>
   :tnoremap t <Nop>
@@ -219,6 +219,7 @@ function! SetNormalMode()
   ":tnoremap E <A-e>
   :tnoremap <A-S-E> <A-e>
   ":tnoremap I <A-i>
+
   :tnoremap <A-S-I> <A-i>
   :tnoremap <LocalLeader>e <C-A-e>
   :tnoremap <LocalLeader>i <C-A-i>

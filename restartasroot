@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+id="$1"
+dir=$(getAbsDir "$id")
+
+echo "$dir" > "$FILE_WARP_TMP_PATH/$id/restart_as_root"
+touch "$FILE_WARP_TMP_PATH/$id/killf"

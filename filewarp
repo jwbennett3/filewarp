@@ -15,6 +15,13 @@ touch "$FILE_WARP_TMP_PATH/$id/abs_dir"
 touch "$FILE_WARP_TMP_PATH/$id/name"
 . navdown2 "$start" "$mode"
 
+if [[ -f "$FILE_WARP_TMP_PATH/$id/restart_as_root" ]]; then
+  dir=$(cat "$FILE_WARP_TMP_PATH/$id/restart_as_root")
+  rm -f "$FILE_WARP_TMP_PATH/$id/restart_as_root"
+  sudo env FILE_WARP_TMP_PATH="$FILE_WARP_TMP_PATH" filewarp "$dir" "$mode"
+  return 2>/dev/null || exit
+fi
+
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
 name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
 abs_path="$abs_dir/$name"
