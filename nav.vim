@@ -21,6 +21,46 @@ let g:floaterm_title=""
 :mapclear! <buffer>
 :set timeoutlen=200
 
+"--------------------------------------------------
+" IPC support for vim-com RPC
+"--------------------------------------------------
+function! s:ProcessIpcCmd(server_address, cmd)
+  if a:cmd =~# '^lua '
+    let l:lua_cmd = substitute(a:cmd, '^lua ', '', '')
+    try
+      exe 'lua ' . l:lua_cmd
+      let l:output = ''
+    catch
+      let l:output = v:exception
+    endtry
+  else
+    try
+      exe a:cmd
+      let l:output = ''
+    catch
+      let l:output = v:exception
+    endtry
+  endif
+  call writefile([l:output], a:server_address . '/output')
+  call system('rm -f ' . a:server_address . '/output_lock')
+endfunction
+
+function! StartIpc()
+  let g:vimcom_root = $VIMCOM_ROOT
+  if g:vimcom_root ==# ''
+    let g:vimcom_root = '/tmp/tmp/var/vim-com'
+  endif
+  let s:server_address = g:vimcom_root . '/filewarp'
+  call mkdir(s:server_address, 'p')
+  if exists('g:ipc_job_id')
+    call jobstop(g:ipc_job_id)
+  endif
+  let g:ipc_job_id = jobstart(['vimSocket', s:server_address], {
+    \ 'on_stdout': {_, data -> s:ProcessIpcCmd(s:server_address, data[0])},
+    \ 'on_stderr': {_, data -> s:ProcessIpcCmd(s:server_address, data[0])}
+    \ })
+endfunction
+
 function! OpenOnExit()
   ":call SetInsertMode()
   ":set noinsertmode
@@ -103,3 +143,4 @@ endif
 let g:skip_post = 1
 
 call UpdatePath()
+call StartIpc()

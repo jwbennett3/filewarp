@@ -1,4 +1,5 @@
 #!/bin/bash -e
+unset BASH_XTRACEFD
 
 start="$1"
 mode=${2:-normal}

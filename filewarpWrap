@@ -9,7 +9,7 @@ mkdir -p "$out_reg"
 
 echo "record" > "$out_reg/.type"
  
-info "$out_reg"
+#info "$out_reg"
 #echo 8 > "$out_reg"
 out_reg="$out_reg" filewarp "$(cat "$in_reg/dir_path")"
  

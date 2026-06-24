@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "openFileForEditing:$*" >> "$FILE_WARP_TMP_PATH/called_commands"

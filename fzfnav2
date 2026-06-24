@@ -1,4 +1,5 @@
 #!/bin/bash -e
+unset BASH_XTRACEFD
 
 id="$1"
 dir="$2"

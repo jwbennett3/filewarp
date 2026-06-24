@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "open:$*" >> "$FILE_WARP_TMP_PATH/called_commands"

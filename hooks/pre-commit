@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+echo "running pre-commit checks..."
+
+cd "$(cd "$(dirname "$0")/.." && pwd)"
+
+# check for trailing whitespace
+if git diff --cached --check | grep -q 'trailing whitespace'; then
+  echo "error: trailing whitespace detected"
+  git diff --cached --check
+  exit 1
+fi
+
+# run tests if they exist
+if [[ -f tests/run_tests.sh ]]; then
+  echo "running tests..."
+  bash tests/run_tests.sh
+fi
+
+echo "pre-commit checks passed"
