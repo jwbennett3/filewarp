@@ -6,7 +6,7 @@ view=`getView "$id"`
 sort_by=`getSortBy "$id"`
 
 if [[ "$view" == "normalView" ]];then
-  arg="$2"
+  arg=$(echo "$2" | sed 's/(.*//')
 elif [[ "$view" == "duView" ]];then
   arg=$(removeFirstWord "$2")
 elif [[ "$sort_by" == "alpha" ]]; then
