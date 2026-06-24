@@ -14,17 +14,25 @@ if [[ "$view" == "normalView" ]]; then
     if [[ -n "$branch" ]]; then
       diffs=$(gitNumDiffs "$dir_path" 2>/dev/null | tr -d '\n')
       if [[ -n "$diffs" && "$diffs" != "0" ]]; then
-        git_info["$base"]="$branch $diffs"
+        git_info["$base"]=$'\e[0;36m'"($branch $diffs)"$'\e[0m'
       else
-        git_info["$base"]="$branch"
+        git_info["$base"]=$'\e[0;37m'"($branch)"$'\e[0m'
       fi
     fi
-  done < <(find "$abs_dir" -maxdepth 1 -type d -name '.git' -print0 2>/dev/null)
+  done < <(find -H "$abs_dir" -maxdepth 2 -name '.git' -print0 2>/dev/null)
 
   shopt -s extglob
   list2 "$abs_dir" | awk '{print $10, $11, $12}' | while IFS= read -r entry; do
     clean="${entry//$'\e'\[*([0-9;])m}"
-    if [[ "$clean" == */ ]]; then
+    clean="${clean%%+([[:space:]])}"
+    if [[ "$clean" == ".git/" || "$clean" == ".git" ]]; then
+      current_base="$(basename "$abs_dir")"
+      if [[ -v git_info["$current_base"] ]]; then
+        echo "$entry ${git_info["$current_base"]}"
+      else
+        echo "$entry"
+      fi
+    elif [[ "$clean" == */ ]]; then
       base="${clean%/}"
       if [[ -v git_info["$base"] ]]; then
         echo "$entry ${git_info["$base"]}"
