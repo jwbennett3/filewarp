@@ -27,12 +27,7 @@ if [[ "$view" == "normalView" ]]; then
     clean="${clean%%+([[:space:]])}"
     entry="${entry%%+([[:space:]])}"
     if [[ "$clean" == ".git/" || "$clean" == ".git" ]]; then
-      current_base="$(basename "$abs_dir")"
-      if [[ -v git_info["$current_base"] ]]; then
-        echo "${entry%?}${git_info["$current_base"]}"
-      else
-        echo "$entry"
-      fi
+      echo "$entry"
     elif [[ "$clean" == */ ]]; then
       base="${clean%/}"
       if [[ -v git_info["$base"] ]]; then
