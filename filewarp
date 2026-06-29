@@ -14,9 +14,7 @@ fi
 mkdir -p "$FILE_WARP_TMP_PATH/$id"
 touch "$FILE_WARP_TMP_PATH/$id/abs_dir"
 touch "$FILE_WARP_TMP_PATH/$id/name"
-info $from_ide
 if [[ $from_ide == 1 ]];then
-  info sin
   export START_IPC=1
 fi
 . navdown2 "$start" "$mode"
