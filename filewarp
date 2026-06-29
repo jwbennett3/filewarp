@@ -14,6 +14,11 @@ fi
 mkdir -p "$FILE_WARP_TMP_PATH/$id"
 touch "$FILE_WARP_TMP_PATH/$id/abs_dir"
 touch "$FILE_WARP_TMP_PATH/$id/name"
+info $from_ide
+if [[ $from_ide == 1 ]];then
+  info sin
+  export START_IPC=1
+fi
 . navdown2 "$start" "$mode"
 
 if [[ -f "$FILE_WARP_TMP_PATH/$id/restart_as_root" ]]; then
@@ -35,7 +40,7 @@ fi
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"
 name="$(cat "$FILE_WARP_TMP_PATH/$id/name")"
 abs_path="$abs_dir/$name"
- 
+
 if [[ -n "$out_reg" ]];then
   echo "$abs_dir" > "$out_reg/curr_dir"
 fi

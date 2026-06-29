@@ -143,4 +143,6 @@ endif
 let g:skip_post = 1
 
 call UpdatePath()
-call StartIpc()
+if $START_IPC != ""
+  call StartIpc()
+endif
