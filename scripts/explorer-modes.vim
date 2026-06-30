@@ -131,6 +131,7 @@ function! SetNormalMode()
   ":tnoremap <C-p> <C-\><C-N><C-w>l:call SetCurrPanelToRight()<CR>
 
   :tnoremap <silent> <A-Space> <F4>
+  :tnoremap <silent> <A-Shift-Space> <C-d>
   :nnoremap 11 <C-w>h
   :nnoremap 12 <C-w>l
   :nnoremap 13 <F6>
@@ -181,17 +182,17 @@ function! SetNormalMode()
   :tnoremap y <Nop>
   "not working
   :tnoremap a <C-\><C-N>:set noinsertmode<CR><C-w>l<C-n><CR>:set insertmode<CR>
-  :tnoremap r <A-S-r>
+  :tnoremap r <C-R>
   ":tnoremap R <C-A-R>
   :tnoremap Þ <C-A-R>
-  :tnoremap s <A-S-s>
+  :tnoremap s <C-s>
   ":tnoremap S <C-A-s>
   :tnoremap “ <C-A-s>
   :tnoremap t <Nop>
   :tnoremap d <Nop>
   :tnoremap h <Nop>
   ":tnoremap n <C-\><C-n>:sil call GoUp()<CR>
-  :tnoremap n <C-n><C-\><C-n><Cmd>silent call timer_start(100, 'UpdatePath')<CR>
+  :tnoremap n <C-n><C-\><C-n>:sil call timer_start(100, 'UpdatePath')<CR>
   ":tnoremap n <C-n>
   :tnoremap e <C-e>
   :tnoremap i <C-i>
@@ -219,7 +220,6 @@ function! SetNormalMode()
   ":tnoremap E <A-e>
   :tnoremap <A-S-E> <A-e>
   ":tnoremap I <A-i>
-
   :tnoremap <A-S-I> <A-i>
   :tnoremap <LocalLeader>e <C-A-e>
   :tnoremap <LocalLeader>i <C-A-i>

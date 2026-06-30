@@ -115,11 +115,7 @@ watchdir="ctrl-w"
 goup="ctrl-n"
 godown="ctrl-o"
 delete="f4"
-fdelete="f12"
-newdir="ctrl-d"
-newdircd="ctrl-alt-d"
-newfile="ctrl-k"
-newfiletype="f12"
+fdelete="ctrl-j"
 quicksearch="f12"
 getpath="alt-c"
 getdir="alt-a"
@@ -135,31 +131,6 @@ set_prompt_to_insert="f11"
 #jumpdown
 #wcat
 #cut()
-#godown="i"
-#--bind="alt-o:execute(echo jumpdown)+jump-accept" \
-#fdelete="D"
-#------------------------------------------
-#fdelete()
-#{
-#trash="/data/tmp"
-#mkdir -p $trash
-#for arg in $input;do
-  #arg="$(removeTrailingSlashes $arg)"
-  #path="$abs_dir/$arg"
-  #rm -rf "$path" &
-  #wait=.1
-  #while [[ -e "$trash/$arg" ]];do
-    #clear
-    #echo deleting $arg $(du -sh "$path" 2> $HOME/null | awk '{print $1}')
-    #if [[ -e "$path" ]];then
-      #sleep $wait
-    #fi
-    #incWait
-  #done
-#done
-#reload
-#}
-#------------------------------------------
 
 
 
@@ -237,7 +208,7 @@ $opts \
 --bind="$bakf:execute-silent(bakf $id {})+reload(getList $id)" \
 --bind="$unbakf:execute-silent(unbakf $id {})+reload(getList $id)" \
 --bind="$delete:execute-silent(delete $MYPID {})+reload(getList $MYPID)" \
---bind="$fdelete:execute(echo fdelete)+accept" \
+--bind="$fdelete:execute-silent(fdelete $MYPID {})+reload(getList $MYPID)" \
 
 
 

@@ -1,11 +1,13 @@
-#!/bin/bash
+#!/bin/bash -e
 
 id="$1"
 
-trash="/d/tmp/trash"
-mkdir -p $trash
 
-abs_dir=`getAbsDir "$id"`
+abs_dir=$(getAbsDir "$id")
+if [[ -z "$abs_dir"  ]];then
+  echo "not force deleting /* directory"
+  exit 1
+fi
 
 arg=$(getArg "$id" "$2")
 if [[ -z "$arg" || "$arg" == *"total"* ]];then
@@ -18,9 +20,9 @@ path="$abs_dir/$arg"
 
 if [[ -L "$path" ]];then
   sudo rm "$path"
-elif [[ -e "$trash/$arg" ]];then
-    echo deleting $arg $(du -sh "$trash/$arg" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
-    sudo rm -rf "$trash/$arg" &
+elif [[ -e "$path" ]];then
+    #echo deleting $arg $(du -sh "$path" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
+    sudo rm -rf "$path" &
     wait=.1
     while [[ -e "$trash/$arg" ]];do
       echo deleting $arg $(du -sh "$trash/$arg" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
