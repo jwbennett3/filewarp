@@ -431,6 +431,12 @@ function SplitParent()
 endfunction
 "===============================================================
 
+function CopyFilePath()
+  :silent exe '!getPath '.GetCurrPanelId().' "$(getName '.GetCurrPanelId().')"'
+endfunction
+
+"===============================================================
+
 function TailConsole()
   :set laststatus=0
   :set noshowmode

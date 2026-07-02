@@ -137,7 +137,7 @@ function! SetNormalMode()
   :nnoremap 13 <F6>
   :nnoremap 14 <A-u>
 
-  :tnoremap <A-S-c> <A-c>
+  ":tnoremap <A-S-c> <A-c>  used to be mapped to CopyFilePath
   :tnoremap <C-A-d> <A-a>
   :tnoremap ç <A-r>
   :tnoremap <C-A-n> <C-\><C-n>:call SplitParent()<CR>
@@ -266,6 +266,7 @@ function! SetNormalMode()
   :tnoremap æ z
   :tnoremap đ x
   ":tnoremap ç c
+  :tnoremap Ç <C-\><C-n>:call CopyFilePath()<CR>
   :tnoremap œ v
   :tnoremap ħ b
 endfunction
