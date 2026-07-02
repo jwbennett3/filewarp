@@ -192,7 +192,7 @@ function! SetNormalMode()
   :tnoremap d <Nop>
   :tnoremap h <Nop>
   ":tnoremap n <C-\><C-n>:sil call GoUp()<CR>
-  :tnoremap n <C-n><C-\><C-n>:sil call timer_start(100, 'UpdatePath')<CR>
+  :tnoremap n <C-n><C-\><C-n><Cmd>silent call timer_start(100, 'UpdatePath')<CR>
   ":tnoremap n <C-n>
   :tnoremap e <C-e>
   :tnoremap i <C-i>
