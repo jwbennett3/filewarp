@@ -1,6 +1,10 @@
 #!/bin/bash -e
 
+#this file is only used for setting the initial query_str
+#goup and godonw call it to make sure it is cleared out
+
 id="$1"
+#info "$id I$2I"
 mkdir -p $FILE_WARP_TMP_PATH/$id
 echo "$2" > $FILE_WARP_TMP_PATH/$id/query_str
 

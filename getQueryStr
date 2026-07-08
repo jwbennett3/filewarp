@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+#this file is only used for setting the initial query_str
+#goup and godonw call it to make sure it is cleared out
+
 id="$1"
 if [[ -e $FILE_WARP_TMP_PATH/$id/query_str ]];then
   cat $FILE_WARP_TMP_PATH/$id/query_str
