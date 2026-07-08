@@ -23,6 +23,15 @@ if [[ -d "$path" ]]; then
     #eval "$on_enter $path"
   #fi
   setAbsDir "$id" "$path"
+  if [[ -e $FILE_WARP_TMP_PATH/$id/index ]];then
+    index="$(cat $FILE_WARP_TMP_PATH/$id/index)"
+    if [[ $index == 0 ]];then
+      setName "$id" ""
+    else
+      name="$(echo -n $(ls -GA --group-directories-first "$path") | awk "{print \$$index}")"
+      setName "$id" "$name"
+    fi
+  fi
   addRecentDirectory "${path#/host}" "$id"
 elif [[ -f "$path" ]]; then
   if [ ! -z "$on_open" ]; then

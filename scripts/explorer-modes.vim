@@ -140,7 +140,7 @@ function! SetNormalMode()
   :tnoremap <silent> z<Space> <C-f>
   "fdelete
   :tnoremap <C-Space><C-Space> <C-j>
-  "delete 
+  "delete
   :tnoremap <silent> <A-Space> <F4>
 
 
@@ -172,7 +172,7 @@ function! SetNormalMode()
   endif
 
 
-  :tnoremap <f5> <f5>
+  :tnoremap <f5> <f6>
 
   :tnoremap q <Nop>
   :tnoremap w <C-\><C-n>:call WatchDir()<CR>

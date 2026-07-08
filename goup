@@ -1,7 +1,6 @@
 #!/bin/bash
 
 id="$1"
-
 setQueryStr "$id" ""
 abs_dir=`getAbsDir "$id"`
 parent=$(dirname $abs_dir)
@@ -10,10 +9,14 @@ on_up=`getOnUp "$id"`
 if [ ! -z "$on_up" ]; then
   eval "$on_up $parent"
 fi
-echo "$parent/" > $FILE_WARP_TMP_PATH/path
-#export abs_dir="$parent"
 setAbsDir "$id" "$parent"
-#echo "$parent" > $FILE_WARP_TMP_PATHabs_dir
+if [[ -e $FILE_WARP_TMP_PATH/$id/index ]];then
+  index="$(cat $FILE_WARP_TMP_PATH/$id/index)"
+  if [[ $index == 0 ]];then
+    setName "$id" ""
+  else
+    name="$(echo -n $(ls -GA --group-directories-first "$parent") | awk "{print \$$index}")"
+    setName "$id" "$name"
+  fi
+fi
 
-#. navdown "$parent" "$on_enter" "$on_up" "$on_open" "$alt_open"
-#reload "$parent"

@@ -3,6 +3,23 @@
 id="$1"
 mkdir -p $FILE_WARP_TMP_PATH/$id
 name=`getArg $id "$2"`
+
+if [[ $name != $(getName $id) ]];then
+  if [[ -z "$name" ]];then
+    echo 0 >  $FILE_WARP_TMP_PATH/$id/index
+  else
+    i=1
+    while IFS= read -r line
+    do
+      echo "$line"
+      if [[ $line == $name ]];then
+        echo $i >  $FILE_WARP_TMP_PATH/$id/index
+        break
+      fi
+      i=$((i+1))
+    done <<< "$(ls -GA --group-directories-first $(getAbsDir $id))"
+  fi
+fi
 echo "$(trimWhitespace $name)" > $FILE_WARP_TMP_PATH/$id/name
 
 
