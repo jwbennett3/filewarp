@@ -117,6 +117,11 @@ function! SetEasyMotion()
 endfunction
 
 function! SetNormalMode()
+  :nnoremap 11 <C-w>h
+  :nnoremap 12 <C-w>l
+  :nnoremap 13 <F6>
+  :nnoremap 14 <A-u>
+
   ":tnoremap <C-q> <C-\><C-N>:let $panel='left'<CR><C-w>h:silent !xdotool key F6<CR>:startinsert<CR>
   ":tnoremap <C-q> <C-\><C-N>:let $panel='left'<CR><C-w>h:call feedkeys("\<F6>"):startinsert<CR>
   :tnoremap <C-q> <C-\><C-N>:set noinsertmode<CR><C-w>h:call SetCurrPanelToLeft()<CR>:set insertmode<CR>
@@ -130,12 +135,14 @@ function! SetNormalMode()
 
   ":tnoremap <C-p> <C-\><C-N><C-w>l:call SetCurrPanelToRight()<CR>
 
+
+  "clear_query
+  :tnoremap <silent> z<Space> <C-f>
+  "fdelete
+  :tnoremap <C-Space><C-Space> <C-j>
+  "delete 
   :tnoremap <silent> <A-Space> <F4>
-  :tnoremap <silent> <A-Shift-Space> <C-d>
-  :nnoremap 11 <C-w>h
-  :nnoremap 12 <C-w>l
-  :nnoremap 13 <F6>
-  :nnoremap 14 <A-u>
+
 
   ":tnoremap <A-S-c> <A-c>  used to be mapped to CopyFilePath
   :tnoremap <C-A-d> <A-a>
@@ -146,8 +153,8 @@ function! SetNormalMode()
   endif
   ":tnoremap <C-e> <C-\><C-n>:call RecentDirsThenNav()<CR>
   :tnoremap <C-A-o> <C-\><C-n>:call SplitChild()<CR>
-  :tnoremap <Space> <C-\><C-n>:set noinsertmode<CR>:call SetInsertMode()<CR>:set insertmode<CR><f11>
-  :tnoremap <C-Space> <C-\><C-n>:set noinsertmode<CR>:call SetNormalMode()<CR>:set insertmode<CR><f10>
+  :tnoremap <silent> <Insert><Space> <C-\><C-n>:set noinsertmode<CR>:call SetInsertMode()<CR>:set insertmode<CR><f11>
+  :tnoremap <silent> <Insert>n <C-\><C-n>:sil set noinsertmode<CR>:call SetNormalMode()<CR>:set insertmode<CR><f10>
 
   :tnoremap <C-u> <A-u><C-\><C-n>:call TogglePreview()<CR>
   :tnoremap <C-A-u> <A-u><C-\><C-n>:call PreviewOff()<CR>
@@ -164,7 +171,6 @@ function! SetNormalMode()
     :tnoremap <LocalLeader>q <C-\><C-n>:set noinsertmode<CR>:call QuitNav()<CR>
   endif
 
-  :tnoremap <LocalLeader>i <C-\><C-n>:set noinsertmode<CR>:call SetInsertMode()<CR>:set insertmode<CR><C-A-i>
 
   :tnoremap <f5> <f5>
 

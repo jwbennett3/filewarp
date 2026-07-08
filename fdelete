@@ -19,10 +19,10 @@ path="$abs_dir/$arg"
 #echo $path >> /tmp/deb
 
 if [[ -L "$path" ]];then
-  sudo rm "$path"
+  rm "$path"
 elif [[ -e "$path" ]];then
     #echo deleting $arg $(du -sh "$path" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
-    sudo rm -rf "$path" &
+    rm -rf "$path" &
     wait=.1
     while [[ -e "$trash/$arg" ]];do
       echo deleting $arg $(du -sh "$trash/$arg" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
@@ -31,13 +31,5 @@ elif [[ -e "$path" ]];then
       fi
       . incWait
     done
-    echo deleting $path $(du -sh "$path" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
-    sudo mv "$path" "$trash/$arg"
-    echo deleting $path $(du -sh "$path" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
-
-elif [[ -e "$path" ]];then
-    echo deleting $path $(du -sh "$path" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
-    sudo mv "$path" "$trash/$arg"
-    echo deleting $path $(du -sh "$path" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
 fi
 
