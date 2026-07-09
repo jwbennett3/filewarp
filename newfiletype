@@ -36,7 +36,7 @@ fi
 
 case $type in
 bash)
-  echo '#!/bin/bash -e' > $path
+  echo '#!/bin/bash -euo pipefail' > $path
   sudo chmod +x $path
 ;;
 python)
