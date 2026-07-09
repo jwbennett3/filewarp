@@ -21,7 +21,7 @@ fi
 if [[ -L "$abs_dir/$(echo $arg | awk '{print $1}')" ]];then
   echo $(echo $arg | awk '{print $1}')
 else
-  echo "$(cleanFilePath "$arg")" >> /tmp/deb
+  #echo "$(cleanFilePath "$arg")" >> /tmp/deb
   echo $(cleanFilePath "$arg")
 fi
 
