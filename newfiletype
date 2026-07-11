@@ -36,7 +36,7 @@ fi
 
 case $type in
 bash)
-  echo '#!/bin/bash -euo pipefail' > $path
+  echo '#!/bin/bash -eu' > $path
   echo 'set -o pipefail' >> $path
   sudo chmod +x $path
 ;;
