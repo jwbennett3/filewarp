@@ -1,8 +1,8 @@
 #!/bin/bash
 
+curr_dir=${1:-..}
 # shellcheck disable=SC2164
-command cd ..
-
+command cd "$curr_dir"
 my_pid=${my_pid:--1}
 addRecentDirectory "$(pwd)" "$my_pid" true > "$HOME/null" 2>&1
 

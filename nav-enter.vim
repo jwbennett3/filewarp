@@ -51,7 +51,7 @@ source $NVIMHOME/scripts/persistence.vim
 
 if trim(system('id -u')) != '0'
   hi FloatermBorder guibg=#E12672 guifg=#E12672
-endif 
+endif
 
 
 augroup nav2

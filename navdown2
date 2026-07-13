@@ -54,6 +54,6 @@ PATH=/inst/nvim-linux64-0.6.1/bin:$PATH \
   NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" \
   nvim -i NONE -u /usr/bin/nav-enter.vim \
     -c "let \$FILE_WARP_TMP_PATH='$FILE_WARP_TMP_PATH' | call ProjTreeFromTerminal('$path','$mode')" \
-    2>/dev/null
+    2> "$HOME"/null
 
 
