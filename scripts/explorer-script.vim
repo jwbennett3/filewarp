@@ -230,10 +230,9 @@ function SetCurrPanelToRight()
 endfunction
 "=============================================================== operations
 function WatchDir()
-  ":let border = execute("hi FloatermBorder","silent")
-  :exe "te watch -c -d -n 1 ls -GAlFt  --color=always --time-style=+'\\%I:\\%M:\\%S' `getAbsDir ".GetCurrPanelId()."`"
-  :let cmd = "watch -c -d -n 1 ls -GAlFt  --color=always --time-style=+'\\%I:\\%M:\\%S' `getAbsDir ".GetCurrPanelId()."`"
-  ":sil exe 'hi '.border
+  let cmd="watch -c -d -n 1 ls -GAlFt  --color=always --time-style=+'\\%I:\\%M:\\%S' $(realpath $(getAbsDir ".GetCurrPanelId()."))"
+  "echo cmd
+  :exe "te ".cmd
 endfunction
 
 function NewDir()

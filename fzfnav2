@@ -111,7 +111,6 @@ toggle="I"
 toggle_up="f12"
 toggle_down="f12"
 jump="ctrl-h"
-watchdir="ctrl-w"
 clear_query="ctrl-f"
 goup="ctrl-n"
 godown="ctrl-o"
@@ -200,7 +199,6 @@ $opts \
 --bind="$set_prompt_to_insert:change-prompt(>)" \
 --bind="$clear_query:clear-query" \
 --bind="$jump:jump" \
---bind="$watchdir:execute(echo watchdir $MYPID)+accept" \
 --bind="$getpath:execute-silent(getPath $id {})+reload(getList $id)" \
 --bind="$getdir:execute-silent(cpDirPath $id {})+reload(getList $id)" \
 --bind="$getfile:execute-silent(cpFileName $id {})+reload(getList $id)" \
