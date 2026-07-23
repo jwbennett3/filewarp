@@ -24,7 +24,7 @@ elif [[ -e "$path" ]];then
     #echo deleting $arg $(du -sh "$path" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
     rm -rf "$path" &
     wait=.1
-    while [[ -e "$trash/$arg" ]];do
+    while [[ -e "$path" ]];do
       echo deleting $arg $(du -sh "$trash/$arg" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$id/console
       if [[ -e "$trash/$arg" ]];then
         sleep "$wait"
