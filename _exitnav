@@ -18,6 +18,7 @@ if [[ -z "$name" || "$name" == "total" ]];then
 elif [[ -d "$path" ]]; then
   echo "" > $FILE_WARP_TMP_PATH/$id/kill
     #setQueryStr "$id" ""
+  setName "$id" ""
   setAbsDir "$id" "$path"
   #eval "$on_exit $path"
 elif [[ -f "$path" ]]; then
