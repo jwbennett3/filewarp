@@ -23,7 +23,7 @@ if [[ -f "$FILE_WARP_TMP_PATH/$id/restart_as_root" ]]; then
   dir=$(cat "$FILE_WARP_TMP_PATH/$id/restart_as_root")
   rm -f "$FILE_WARP_TMP_PATH/$id/restart_as_root"
   sudo env FILE_WARP_TMP_PATH="$FILE_WARP_TMP_PATH" original_user="${USER:-$(id -un)}" filewarp "$dir" "$mode"
-  return 2>/dev/null || exit
+  exit
 fi
 
 if [[ -f "$FILE_WARP_TMP_PATH/$id/restart_as_normal" ]]; then
@@ -32,7 +32,7 @@ if [[ -f "$FILE_WARP_TMP_PATH/$id/restart_as_normal" ]]; then
   rm -f "$FILE_WARP_TMP_PATH/$id/restart_as_normal"
   rm -f "$FILE_WARP_TMP_PATH/$id/restart_as_normal_user"
   sudo -u "$original_user" env FILE_WARP_TMP_PATH="$FILE_WARP_TMP_PATH" filewarp "$dir" "$mode"
-  return 2>/dev/null || exit
+  exit
 fi
 
 abs_dir="$(cat "$FILE_WARP_TMP_PATH/$id/abs_dir")"

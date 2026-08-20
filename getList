@@ -10,35 +10,37 @@ if [[ "$view" == "normalView" ]]; then
   while IFS= read -r -d '' git_dir; do
     dir_path="${git_dir%/.git}"
     base="$(basename "$dir_path")"
-    branch=$(getBranchName "$dir_path" 2>/dev/null | tr -d '\n')
+    branch=$(getBranchName "$dir_path" 2> "$HOME"/null | tr -d '\n')
     if [[ -n "$branch" ]]; then
-      diffs=$(gitNumDiffs "$dir_path" 2>/dev/null | tr -d '\n')
+      diffs=$(gitNumDiffs "$dir_path" 2> "$HOME"/null | tr -d '\n')
       if [[ -n "$diffs" && "$diffs" != "0" ]]; then
         git_info["$base"]=$'\e[0;36m'"($branch $diffs)"$'\e[0m'
       else
         git_info["$base"]=$'\e[0;37m'"($branch)"$'\e[0m'
       fi
     fi
-  done < <(find -H "$abs_dir" -maxdepth 2 -name '.git' -print0 2>/dev/null)
+  done < <(find -H "$abs_dir" -maxdepth 2 -name '.git' -print0 2> "$HOME"/null)
 
   shopt -s extglob
-  list2 "$abs_dir" | awk '{print $10, $11, $12}' | while IFS= read -r entry; do
-    clean="${entry//$'\e'\[*([0-9;])m}"
-    clean="${clean%%+([[:space:]])}"
-    entry="${entry%%+([[:space:]])}"
-    if [[ "$clean" == ".git/" || "$clean" == ".git" ]]; then
-      echo "$entry"
-    elif [[ "$clean" == */ ]]; then
-      base="${clean%/}"
-      if [[ -v git_info["$base"] ]]; then
-        echo "${entry%?}${git_info["$base"]}"
+  list2 "$abs_dir" |
+    awk '{print $10, $11, $12}' |
+    while IFS= read -r entry; do
+      clean="${entry//$'\e'\[*([0-9;])m}"
+      clean="${clean%%+([[:space:]])}"
+      entry="${entry%%+([[:space:]])}"
+      if [[ "$clean" == ".git/" || "$clean" == ".git" ]]; then
+        echo "$entry"
+      elif [[ "$clean" == */ ]]; then
+        base="${clean%/}"
+        if [[ -v git_info["$base"] ]]; then
+          echo "${entry%?}${git_info["$base"]}"
+        else
+          echo "$entry"
+        fi
       else
         echo "$entry"
       fi
-    else
-      echo "$entry"
-    fi
-  done
+    done
 else
   if [[ "$view" == "duView" ]]; then
  ####sudo sh -c 'cd "$abs_dir"'
@@ -46,22 +48,22 @@ else
     echo ""
     cd "$abs_dir"
     if [[ "$sort_by" == "size" ]];then
-      sudo du -sh --no-dereference --one-file-system --exclude=/data --exclude=dms* --exclude=/share --exclude=/old_share --exclude=/proc --exclude=/swapfile * | sort -rh
+      sudo du -sh --no-dereference --one-file-system --exclude=/data --exclude=dms* --exclude=/share --exclude=/old_share --exclude=/proc --exclude=/swapfile * |
+        sort -rh
     else
       sudo du -sh --no-dereference --one-file-system --exclude=/data --exclude=dms* --exclude=/share --exclude=/old_share --exclude=/proc --exclude=/swapfile *
     fi
-elif [[ "$sort_by" == "alpha" ]]; then
-  list_out=$(ls -AlF "$abs_dir" --color=always --group-directories-first --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r')
-  if [[ $(echo $list_out | awk '{print $5}') != "$(echo $list_out | awk '{print $6}')" ]];then
+  elif [[ "$sort_by" == "alpha" ]]; then
+    list_out=$(ls -AlF "$abs_dir" --color=always --group-directories-first --dereference-command-line-symlink-to-dir --time-style=+'%a %Y-%m-%d %I:%M:%S %r')
+    if [[ $(echo $list_out | awk '{print $5}') != "$(echo $list_out | awk '{print $6}')" ]];then
     #echo $list_out
 #echo $list_out | awk '{print $5}'
 #echo $list_out | awk '{print $6}'
-    echo "$list_out" | awk '{print $3":" $4, $1"    " $11}'
+      echo "$list_out" | awk '{print $3":" $4, $1"    " $11}'
+    else
+      list2 "$abs_dir" | awk '{print $3, $1, "    " $10, $11, $12}'
+    fi
   else
-    list2 "$abs_dir" | awk '{print $3, $1, "    " $10, $11, $12}'
+    list2 "$abs_dir" "time" | awk '{print $5, $6, $7, "  " $10, $11, $12}'
   fi
-
-else
-  list2 "$abs_dir" "time" | awk '{print $5, $6, $7, "  " $10, $11, $12}'
-fi
 fi

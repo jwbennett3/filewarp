@@ -20,7 +20,7 @@ if [[ -L "$path" ]];then
   sudo rm "$path"
 elif [[ -e "$trash/$arg" ]];then
   echo deleting $arg $(du -sh "$trash/$arg" 2> "$HOME"/null | awk '{print $1}') > $FILE_WARP_TMP_PATH/$ id/console
-  sudo rm -rf "$trash/$arg" 
+  sudo rm -rf "$trash/$arg"
     #sudo rm -rf "$trash/$arg" &
   #wait=.1
   #while [[ -e "$trash/$arg" ]];do

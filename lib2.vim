@@ -1,12 +1,4 @@
 
-func! DumpToStdout(str)
-    "redi! > /dev/stdout
-     redi! > /tmp/abc
-    :echo a:str
-     ":sil exe '!echo -e "'.a:str.'"'
-    redi END
-endfunc
-
 
 function CursorIsAtBeginningOfLine()
   :let pos=getpos('.')

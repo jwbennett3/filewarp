@@ -1,16 +1,16 @@
 local record M
-  run : function(string, string)
+  run:function(string, string)
 end
 
 local explorer = require('filewarp.explorer')
 
-function M.run(path: string, mode: string)
+function M.run(path:string, mode:string)
   path = path or vim.fn.getcwd()
   mode = mode or 'normal'
 
   local jump_labels = 'arstneiodhzxcvqwfpluyARSTNEIODHZXCVQWFPLUY'
 
-  local bindings: {string} = {
+  local bindings:{string} = {
     'ctrl-e:down',
     'ctrl-i:up',
     'ctrl-a:backward-char',
@@ -36,7 +36,7 @@ function M.run(path: string, mode: string)
     'ctrl-o:jump-accept',
   }
 
-  local fzf_opts: {string} = {
+  local fzf_opts:{string} = {
     '--ansi',
     '--jump-labels=' .. jump_labels,
     '--layout=reverse',
@@ -47,7 +47,7 @@ function M.run(path: string, mode: string)
   end
 
   vim.env.FZF_DEFAULT_OPTS = table.concat(fzf_opts, '\n')
-  vim.env.FZF_DEFAULT_COMMAND = "rg --follow --glob '' 2> /dev/null"
+  vim.env.FZF_DEFAULT_COMMAND = "rg --follow --glob '' 2> "$HOME"/null
 
   local id = vim.env.id
   if not id or id == '' then
@@ -74,9 +74,7 @@ function M.run(path: string, mode: string)
   vim.api.nvim_create_autocmd('TermClose', {
     pattern = '*',
     once = true,
-    callback = function()
-      vim.cmd('q!')
-    end,
+    callback = function() vim.cmd('q!') end,
   })
 
   explorer.float_cmd(cmd_str, {w = 1.0, h = 1.0})

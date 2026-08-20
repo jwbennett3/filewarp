@@ -56,7 +56,7 @@ fi
 
 #on_exit_state=`getOnExit "$id"`
 #if [[ -z "$on_exit_state" ]];then
-  setOnExit "$id" "$on_exit"
+setOnExit "$id" "$on_exit"
 #fi
 
 alt_on_exit_state=`getAltOnExit "$id"`
@@ -134,7 +134,7 @@ set_prompt_to_insert="f11"
 
 
 if [[ "$mode" == "normal" ]];then
-opts=$(cat <<-END
+  opts=$(cat <<-END
 --prompt=(normal)
 --multi
 --border=rounded
@@ -144,13 +144,13 @@ opts=$(cat <<-END
 --color=hl:#719872,fg:#D9D9D9,header:#719872,fg+:#D9D9D9
 --color=pointer:#E12672,marker:#E17899,prompt:#98BEDE,hl+:#98BC99
 END
-)
+  )
 else
-opts=$(cat <<-END
+  opts=$(cat <<-END
 --prompt=>
 --pointer=>
 END
-)
+  )
 fi
 
 head_str=$(cat <<-EOM
@@ -166,47 +166,44 @@ fi
 
 
 fzf --header="$head_str" \
---preview="getPreview {} $id" \
---preview-window=$preview_window \
---query="$(getQueryStr $id)" \
-$opts \
---bind="change:first" \
---bind="f7:execute-silent(setName $MYPID {})" \
---bind="$leave:execute-silent(setName $MYPID {})+execute(exitnav $MYPID)+abort" \
---bind="$altleave:enter:execute-silent(setName $MYPID {})+execute(altexitnav $MYPID)+accept" \
---bind="$refresh:reload(getList $MYPID)+refresh-preview+execute-silent(setName $MYPID {})" \
---bind="$up:up+execute-silent(setName $MYPID {})+reload(getList $MYPID)+refresh-preview" \
---bind="$down:down+execute-silent(setName $MYPID {})+reload(getList $MYPID)+refresh-preview" \
---bind="$goup:execute-silent(goup $id)+reload(getList $id)+clear-query" \
---bind="$godown:execute-silent(fzfgodown $MYPID {})+reload(getList $MYPID)+clear-query" \
---bind="$page_up:half-page-up+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
---bind="$page_down:half-page-down+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
---bind="$goto_top:first+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
---bind="$goto_bottom:last+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
---bind="$preview_up:preview-up" \
---bind="$preview_down:preview-down" \
---bind="$preview_page_up:preview-half-page-up" \
---bind="$restartasroot:execute-silent(restartasroot $MYPID {})+abort" \
---bind="$preview_page_down:preview-half-page-down" \
---bind="$toggle:toggle" \
---bind="$toggle_up:toggle+up" \
---bind="$toggle_down:toggle+down" \
---bind="$toggledu:execute-silent(toggledu $id)+reload(getList $MYPID)" \
---bind="$toggleview:execute-silent(toggleview $id)+reload(getList $MYPID)" \
---bind="$togglesortby:execute-silent(togglesortby $id)+reload(getList $MYPID)" \
---bind="$togglepreview:toggle-preview" \
---bind="$set_prompt_to_normal:change-prompt((normal))" \
---bind="$set_prompt_to_insert:change-prompt(>)" \
---bind="$clear_query:clear-query" \
---bind="$jump:jump" \
---bind="$getpath:execute-silent(getPath $id {})+reload(getList $id)" \
---bind="$getdir:execute-silent(cpDirPath $id {})+reload(getList $id)" \
---bind="$getfile:execute-silent(cpFileName $id {})+reload(getList $id)" \
---bind="$bak:execute-silent(bak $id {})+reload(getList $id)" \
---bind="$bakf:execute-silent(bakf $id {})+reload(getList $id)" \
---bind="$unbakf:execute-silent(unbakf $id {})+reload(getList $id)" \
---bind="$delete:execute-silent(delete $MYPID {})+reload(getList $MYPID)" \
---bind="$fdelete:execute-silent(fdelete $MYPID {})+reload(getList $MYPID)" \
-
-
-
+  --preview="getPreview {} $id" \
+  --preview-window=$preview_window \
+  --query="$(getQueryStr $id)" \
+  $opts \
+  --bind="change:first" \
+  --bind="f7:execute-silent(setName $MYPID {})" \
+  --bind="$leave:execute-silent(setName $MYPID {})+execute(exitnav $MYPID)+abort" \
+  --bind="$altleave:enter:execute-silent(setName $MYPID {})+execute(altexitnav $MYPID)+accept" \
+  --bind="$refresh:reload(getList $MYPID)+refresh-preview+execute-silent(setName $MYPID {})" \
+  --bind="$up:up+execute-silent(setName $MYPID {})+reload(getList $MYPID)+refresh-preview" \
+  --bind="$down:down+execute-silent(setName $MYPID {})+reload(getList $MYPID)+refresh-preview" \
+  --bind="$goup:execute-silent(goup $id)+reload(getList $id)+clear-query" \
+  --bind="$godown:execute-silent(fzfgodown $MYPID {})+reload(getList $MYPID)+clear-query" \
+  --bind="$page_up:half-page-up+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+  --bind="$page_down:half-page-down+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+  --bind="$goto_top:first+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+  --bind="$goto_bottom:last+execute-silent(setName $MYPID {})+reload(getList $MYPID)" \
+  --bind="$preview_up:preview-up" \
+  --bind="$preview_down:preview-down" \
+  --bind="$preview_page_up:preview-half-page-up" \
+  --bind="$restartasroot:execute-silent(restartasroot $MYPID {})+abort" \
+  --bind="$preview_page_down:preview-half-page-down" \
+  --bind="$toggle:toggle" \
+  --bind="$toggle_up:toggle+up" \
+  --bind="$toggle_down:toggle+down" \
+  --bind="$toggledu:execute-silent(toggledu $id)+reload(getList $MYPID)" \
+  --bind="$toggleview:execute-silent(toggleview $id)+reload(getList $MYPID)" \
+  --bind="$togglesortby:execute-silent(togglesortby $id)+reload(getList $MYPID)" \
+  --bind="$togglepreview:toggle-preview" \
+  --bind="$set_prompt_to_normal:change-prompt((normal))" \
+  --bind="$set_prompt_to_insert:change-prompt(>)" \
+  --bind="$clear_query:clear-query" \
+  --bind="$jump:jump" \
+  --bind="$getpath:execute-silent(getPath $id {})+reload(getList $id)" \
+  --bind="$getdir:execute-silent(cpDirPath $id {})+reload(getList $id)" \
+  --bind="$getfile:execute-silent(cpFileName $id {})+reload(getList $id)" \
+  --bind="$bak:execute-silent(bak $id {})+reload(getList $id)" \
+  --bind="$bakf:execute-silent(bakf $id {})+reload(getList $id)" \
+  --bind="$unbakf:execute-silent(unbakf $id {})+reload(getList $id)" \
+  --bind="$delete:execute-silent(delete $MYPID {})+reload(getList $MYPID)" \
+  --bind="$fdelete:execute-silent(fdelete $MYPID {})+reload(getList $MYPID)"

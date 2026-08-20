@@ -35,7 +35,7 @@ test_id_assignment_from_ide_0() {
   source "$ROOT_DIR/filewarp" /tmp
 
   local recorded
-  recorded=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>/dev/null)
+  recorded=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>"$HOME"/null)
   assert_eq "$$" "$recorded" "id should be \$\$ when from_ide=0"
 }
 
@@ -46,7 +46,7 @@ test_id_assignment_from_ide_1() {
   source "$ROOT_DIR/filewarp" /tmp normal 1
 
   local recorded
-  recorded=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>/dev/null)
+  recorded=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>"$HOME"/null)
   assert_eq "0" "$recorded" "id should be 0 when from_ide=1"
 }
 
@@ -61,7 +61,7 @@ test_state_dir_contains_abs_dir_and_name() {
   source "$ROOT_DIR/filewarp" /start/path
 
   local id_val
-  id_val=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>/dev/null)
+  id_val=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>"$HOME"/null)
 
   assert_file_exists "$FILE_WARP_TMP_PATH/$id_val/abs_dir" "abs_dir file should exist"
   assert_file_exists "$FILE_WARP_TMP_PATH/$id_val/name" "name file should exist"
@@ -281,6 +281,6 @@ test_default_from_ide_is_0() {
   source "$ROOT_DIR/filewarp" /tmp
 
   local recorded
-  recorded=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>/dev/null)
+  recorded=$(cat "$FILE_WARP_TMP_PATH/.test_id" 2>"$HOME"/null)
   assert_eq "$$" "$recorded" "default from_ide should be 0 (id=\$\$)"
 }

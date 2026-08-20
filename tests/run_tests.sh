@@ -27,7 +27,7 @@ assert_file_contains() {
     return 1
   fi
   local content
-  content=$(cat "$file" 2>/dev/null)
+  content=$(cat "$file" 2> "$HOME"/null)
   if [[ "$content" != "$expected" ]]; then
     echo "FAIL:$label:file [$file] expected [$expected] actual [$content]" >&2
     return 1
@@ -70,7 +70,7 @@ run_one_test() {
     cd "$tmp_dir"
     # Execute the test function; it must be defined by the sourced test file
     "$test_name"
-  ) 2>"$tmp_dir/test_stderr"
+  ) 2> "$tmp_dir/test_stderr"
   local exit_code=$?
   set -e
 
@@ -79,7 +79,7 @@ run_one_test() {
     PASS=$((PASS + 1))
   else
     local err_detail
-    err_detail=$(tr '\n' ';' < "$tmp_dir/test_stderr" 2>/dev/null | sed 's/;$//')
+    err_detail=$(tr '\n' ';' < "$tmp_dir/test_stderr" 2> "$HOME"/null | sed 's/;$//')
     echo "  FAIL  $test_name"
     echo "        $err_detail"
     FAIL=$((FAIL + 1))
