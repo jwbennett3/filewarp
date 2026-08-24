@@ -3,7 +3,8 @@
 set -o vi
 
 if [[ -z "$id" ]]; then
-  export MYPID=$(echo $$)
+  MYPID=$$
+  export MYPID
 else
   export MYPID=$id
 fi
@@ -53,7 +54,5 @@ PATH=/inst/nvim-linux64-0.6.1/bin:$PATH \
   VIMRUNTIME=/inst/nvim-linux64-0.6.1/share/nvim/runtime \
   NVIM_LISTEN_ADDRESS="/tmp/vimnav$$" \
   nvim -i NONE -u /usr/bin/nav-enter.vim \
-    -c "let \$FILE_WARP_TMP_PATH='$FILE_WARP_TMP_PATH' | call ProjTreeFromTerminal('$path','$mode')" \
-    2> "$HOME"/null
-
-
+  -c "let \$FILE_WARP_TMP_PATH='$FILE_WARP_TMP_PATH' | call ProjTreeFromTerminal('$path','$mode')" \
+  2> "$HOME"/null

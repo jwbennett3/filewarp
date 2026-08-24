@@ -361,6 +361,7 @@ function! HostName()
   return system("echo -n $HOSTNAME")
 endfunction
 
+"TODO highlight according to how dirty it is , red for real dirty
 function! SetDirectoryStatusLine(dir, win_id)
   hi default GitBranch ctermfg=white guifg=white
   hi default GitDirty ctermfg=cyan guifg=cyan
