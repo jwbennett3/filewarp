@@ -1,0 +1,33 @@
+#!/bin/bash -e
+#TODO this needs moved to bashlib
+
+path=${1:-.}
+dir=$(getProjRootPath "$path")
+if [[ -n "$dir" ]];then
+  # shellcheck disable=SC2010
+  #git_owner=$(ls -lisa "$dir" | grep -w "\.git" | grep "$(basename "$HOME")")
+  #if [[ -n "$git_owner" ]];then
+  cd "$dir"
+  porcelain_status=$(git status --porcelain)
+  if [[ -n "${porcelain_status+x}" ]];then
+    num_stat=$(git diff --numstat 2> "$HOME"/null)
+    additions=$(echo "$num_stat" | awk '{print $1}' | tr '\r\n' ' ')
+    deletions=$(echo "$num_stat" | awk '{print $2}' | tr '\r\n' ' ')
+    new_files=$(echo "$porcelain_status" | grep "??" | col 2)
+    new_file_sum=0
+    for file in $new_files;do
+      new_file_sum=$((new_file_sum+$(cat "$file" | wc -l)))
+    done
+    sumList "$additions" "$deletions" "$new_file_sum"
+    true
+  fi
+    #if [[ $additions == '^[0-9]+$+' && $deletions == '^[0-9]+$' ]];then
+      #additions=${additions/-/0}
+      #deletions=${deletions/-/0}
+      #sumList "$additions" "$deletions"
+    #else
+      #echo 0
+    #fi
+  cd - > "$HOME/null" 2>&1
+fi
+#fi
